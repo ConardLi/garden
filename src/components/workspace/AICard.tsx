@@ -112,7 +112,6 @@ const AICard: React.FC<AICardProps> = React.memo(({
 
   const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log(777,'handleFavoriteClick');
     onFavoriteToggle();
   }, [onFavoriteToggle]);
 
@@ -126,7 +125,8 @@ const AICard: React.FC<AICardProps> = React.memo(({
   const cardContent = (
     <StyledCardContent>
       <IconContainer>
-        <IconImage src={`/ai/${website.icon}`} />
+        {website.iconType ?<IconImage src={`${website.icon}`} />: <IconImage src={`/ai/${website.icon}`} />}
+        
       </IconContainer>
       <ContentContainer>
         <StyledTitle variant="subtitle1">

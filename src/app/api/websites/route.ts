@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Website from '@/models/website';
 import { connectDB } from '@/lib/db';
 
-const MAX_LIMIT = 30;
+const MAX_LIMIT = 50;
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,7 +13,8 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), MAX_LIMIT);
     const type = searchParams.get('type');
     const search = searchParams.get('search');
-    
+    const titles = searchParams.get('titles')?.split(',');
+
     const query: any = {};
 
     if (type) {
@@ -26,11 +27,15 @@ export async function GET(request: NextRequest) {
       ];
     }
 
+    if (titles && titles.length > 0) {
+      query.title = { $in: titles };
+    }
+
     const [websites, total] = await Promise.all([
       Website.find(query)
         .skip((page - 1) * limit)
         .limit(limit)
-        .sort({ createdAt: -1 }),
+        .lean(),
       Website.countDocuments(query)
     ]);
 

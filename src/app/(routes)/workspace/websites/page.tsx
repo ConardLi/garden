@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQueryParams } from "@/hooks/useQueryParams";
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -8,15 +8,11 @@ import WorkspaceWebsites from './WorkspaceWebsites';
 import WorkspaceSearch from '../components/WorkspaceSearch';
 import { getStoredSearchEngine } from '@/utils/storage';
 import useDebounce from '@/hooks/useDebounce';
-
-type QueryParams = Record<"tag" | "toolTag", string>;
-
+import { WebsiteType } from '@/constants/websites';
 
 interface WorkspaceContentProps {
-  activeTag?: string;
-  onTagChange: (tag: string) => void;
-  selectedToolTags?: string[];
-  onToolTagsChange?: (tags: string[]) => void;
+  activeTag: WebsiteType;
+  onTagChange: (tag: WebsiteType) => void;
 }
 
 const Container = styled(Box)(({ theme }) => ({
@@ -25,9 +21,17 @@ const Container = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   padding: theme.spacing(4, 2),
-  overflowY: 'auto',
   height: '100vh',
 }));
+
+const ContentWrapper = styled(Box)({
+  flex: 1,
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  overflowY: 'auto',
+});
 
 const ModuleTitle = styled(Typography)(({ theme }) => ({
   fontSize: '3rem',
@@ -44,12 +48,9 @@ const ModuleTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-
 const WorkspaceContent: React.FC<WorkspaceContentProps> = ({
   activeTag,
   onTagChange,
-  selectedToolTags,
-  onToolTagsChange,
 }) => {
   const [searchEngine, setSearchEngine] = useState(() => getStoredSearchEngine() || 'google');
   const [searchText, setSearchText] = useState('');
@@ -82,49 +83,37 @@ const WorkspaceContent: React.FC<WorkspaceContentProps> = ({
         />
       </Box>
       
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '1600px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 4,
-        }}
-      >
+      <ContentWrapper>
         <WorkspaceWebsites 
-            activeTag={activeTag} 
-            onTagChange={onTagChange} 
-            searchText={debouncedSearchText}
-          />
-      </Box>
+          activeTag={activeTag} 
+          onTagChange={onTagChange} 
+          searchText={debouncedSearchText}
+        />
+      </ContentWrapper>
     </Container>
   );
 };
 
+const Workspace = () => {
+  const { params, updateParams } = useQueryParams<{ tag: string }>({ tag: 'app' });
+  const [activeTag, setActiveTag] = useState<WebsiteType>('app');
 
-const Workspace: React.FC = () => {
-  const { params, updateParams } = useQueryParams<QueryParams>({
-    tag: "写作工具",
-    toolTag: "",
-  });
-  const handleTagChange = (newTag: string) => {
-    if (newTag === params.tag) return;
-    updateParams({ tag: newTag });
-  };
+  // 从 URL 参数同步到状态
+  useEffect(() => {
+    if (params.tag && params.tag !== activeTag) {
+      setActiveTag(params.tag as WebsiteType);
+    }
+  }, [params.tag]);
 
-  const handleToolTagChange = (newTags: string[]) => {
-    const newTag = newTags[0] || "";
-    if (newTag === params.toolTag) return;
-    updateParams({ toolTag: newTag });
+  const handleTagChange = (tag: WebsiteType) => {
+    setActiveTag(tag);
+    updateParams({ tag });
   };
 
   return (
     <WorkspaceContent
-      activeTag={params.tag}
+      activeTag={activeTag}
       onTagChange={handleTagChange}
-      selectedToolTags={params.toolTag ? [params.toolTag] : []}
-      onToolTagsChange={handleToolTagChange}
     />
   );
 };

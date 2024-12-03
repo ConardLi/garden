@@ -5,10 +5,9 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'code秘密花园 - 工具箱',
+    title: "code秘密花园 - 工具箱",
     description: "A collection of useful web tools",
   };
 }

@@ -15,6 +15,7 @@ interface TagFilterProps<T extends string> {
   tags: T[];
   selectedTags: T[];
   tagToIcon?: { [key: string]: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string } };
+  tagToLabel?: { [key: string]: string };
   onTagChange: (tags: T[]) => void;
   singleSelect?: boolean;
 }
@@ -23,6 +24,7 @@ const TagFilter = <T extends string>({
   tags,
   selectedTags,
   tagToIcon,
+  tagToLabel,
   onTagChange,
   singleSelect = false,
 }: TagFilterProps<T>) => {
@@ -41,29 +43,42 @@ const TagFilter = <T extends string>({
     <Container>
       {tags.map((tag) => {
         const Icon = tagToIcon?.[tag];
+        const label = tagToLabel?.[tag] || tag;
+        const isSelected = selectedTags.includes(tag);
         return (
           <Chip
             key={tag}
-            label={tag}
+            label={label}
             icon={Icon ? <Icon /> : undefined}
             onClick={() => handleTagClick(tag)}
-            color={selectedTags.includes(tag) ? 'primary' : 'default'}
-            variant={selectedTags.includes(tag) ? 'filled' : 'outlined'}
+            color={isSelected ? 'primary' : 'default'}
+            variant={isSelected ? 'filled' : 'outlined'}
             sx={{
-              color: 'white',
-              borderColor: 'rgba(255, 255, 255, 0.3)',
-              '&:hover': {
-                borderColor: 'rgba(255, 255, 255, 0.5)',
+              height: '32px',
+              borderRadius: '16px',
+              backgroundColor: isSelected ? 'primary.main' : 'rgba(255, 255, 255, 0.05)',
+              borderColor: isSelected ? 'primary.main' : 'rgba(255, 255, 255, 0.3)',
+              color: isSelected ? 'white' : 'rgba(255, 255, 255, 0.85)',
+              '& .MuiChip-label': {
+                fontSize: '0.875rem',
+                padding: '0 12px',
               },
               '& .MuiChip-icon': {
-                color: 'inherit',
+                fontSize: '1.25rem',
+                color: isSelected ? 'white' : 'rgba(255, 255, 255, 0.85)',
+                marginLeft: '8px',
               },
-              '&.MuiChip-colorPrimary': {
-                backgroundColor: 'rgba(25, 118, 210, 0.7)',
-                '&:hover': {
-                  backgroundColor: 'rgba(25, 118, 210, 0.8)',
+              transition: 'all 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.05)',
+                backgroundColor: isSelected ? 'primary.dark' : 'rgba(255, 255, 255, 0.15)',
+                borderColor: isSelected ? 'primary.dark' : 'rgba(255, 255, 255, 0.6)',
+                color: 'white',
+                '& .MuiChip-icon': {
+                  color: 'white',
                 },
               },
+              backdropFilter: 'blur(8px)',
             }}
           />
         );

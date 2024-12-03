@@ -22,6 +22,7 @@ export interface AIWebsite {
   description: string;
   url: string;
   icon: string;
+  iconType?:string;
   tags?: AITagType[];
 }
 
