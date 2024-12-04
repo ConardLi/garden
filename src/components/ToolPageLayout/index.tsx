@@ -15,7 +15,7 @@ const ToolPageLayout: FC<ToolPageLayoutProps> = ({ title, children }) => {
   useTitle(title);
 
   return (
-    <ToolLayout>
+    <ToolLayout title={title}>
       <Container maxWidth={false} sx={{ py: 2, px: { xs: 2, sm: 4 } }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

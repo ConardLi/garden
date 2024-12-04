@@ -51,7 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const TopNav: FC = () => {
+const TopNav: FC<{ title?: string }> = ({ title }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [wechatAnchorEl, setWechatAnchorEl] = useState<HTMLElement | null>(null);
   const [mpAnchorEl, setMpAnchorEl] = useState<HTMLElement | null>(null);
@@ -139,7 +139,7 @@ const TopNav: FC = () => {
                   letterSpacing: '0.01em',
                 }}
               >
-                工具箱
+                {title || '工具箱'}
               </Typography>
             </Stack>
           </Stack>

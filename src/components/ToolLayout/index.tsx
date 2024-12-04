@@ -5,14 +5,15 @@ import TopNav from '../TopNav';
 
 interface ToolLayoutProps {
   children: ReactNode;
+  title?: string;
 }
 
-const ToolLayout: FC<ToolLayoutProps> = ({ children }) => {
+const ToolLayout: FC<ToolLayoutProps> = ({ children, title }) => {
   const [isNavOpen] = useState(true);
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <TopNav />
+      <TopNav title={title} />
       <ToolsNav open={isNavOpen} />
       <Box
         component="main"
@@ -32,4 +33,4 @@ const ToolLayout: FC<ToolLayoutProps> = ({ children }) => {
   );
 };
 
-export default ToolLayout; 
+export default ToolLayout;
