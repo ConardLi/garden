@@ -72,21 +72,47 @@ interface SimpleAICardProps {
   onClick: () => void;
 }
 
+const IconImage = React.memo(({ website }: { website: AIWebsite }) => {
+  if (website.iconType === "svg") {
+    console.log(website.title, website.iconValue);
+    return (
+      <Box
+        component="div"
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          "& svg": {
+            width: "100%",
+            height: "100%",
+          },
+        }}
+        dangerouslySetInnerHTML={{
+          __html: website.iconValue || "",
+        }}
+      />
+    );
+  }
+
+  const iconPath = website.iconType ? website.icon : `/ai/${website.icon}`;
+  return <img src={iconPath} alt={website.title} />;
+});
+
 const SimpleAICard: React.FC<SimpleAICardProps> = React.memo(
   ({ website, onClick }) => {
-    const iconPath = website.iconType ? website.icon : `/ai/${website.icon}`;
-
     return (
       <Tooltip title={website.description} arrow placement="top">
         <StyledCard onClick={onClick}>
           <StyledCardActionArea>
             {website.iconType ? (
               <LargeIconContainer>
-                <img src={iconPath} alt={website.title} />
+                <IconImage website={website} />
               </LargeIconContainer>
             ) : (
               <IconContainer>
-                <img src={iconPath} alt={website.title} />
+                <IconImage website={website} />
               </IconContainer>
             )}
             <WebsiteName>{website.title}</WebsiteName>

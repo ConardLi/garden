@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Website from '@/models/website';
+import AISite from '@/models/aisite';
 import { connectDB } from '@/lib/db';
 
 const MAX_LIMIT = 50;
@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), MAX_LIMIT);
     const type = searchParams.get('type');
     const search = searchParams.get('search');
-    const titles = searchParams.get('titles')?.split(',');
 
     const query: any = {};
 
@@ -28,20 +27,16 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    if (titles && titles.length > 0) {
-      query.title = { $in: titles };
-    }
-
-    const [websites, total] = await Promise.all([
-      Website.find(query)
+    const [aisites, total] = await Promise.all([
+      AISite.find(query)
         .skip((page - 1) * limit)
         .limit(limit)
         .lean(),
-      Website.countDocuments(query)
+      AISite.countDocuments(query)
     ]);
 
     return NextResponse.json({
-      websites,
+      aisites,
       pagination: {
         total,
         page,
@@ -50,9 +45,9 @@ export async function GET(request: NextRequest) {
       }
     });
   } catch (error: any) {
-    console.error('Error fetching websites:', error);
+    console.error('Error fetching AI sites:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch websites' },
+      { error: 'Failed to fetch AI sites' },
       { status: 500 }
     );
   }
@@ -63,14 +58,14 @@ export async function POST(request: NextRequest) {
     await connectDB();
     
     const body = await request.json();
-    const website = new Website(body);
-    await website.save();
+    const aisite = new AISite(body);
+    await aisite.save();
 
-    return NextResponse.json(website, { status: 201 });
+    return NextResponse.json(aisite, { status: 201 });
   } catch (error: any) {
-    console.error('Error creating website:', error);
+    console.error('Error creating AI site:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to create website' },
+      { error: error.message || 'Failed to create AI site' },
       { status: 400 }
     );
   }

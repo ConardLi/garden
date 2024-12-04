@@ -23,6 +23,7 @@ export interface AIWebsite {
   url: string;
   icon: string;
   iconType?:string;
+  iconValue?:string;
   tags?: AITagType[];
 }
 
