@@ -37,6 +37,7 @@
     "buffer": "^6.0.3",
     "camelcase": "^6.2.1",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "cos-nodejs-sdk-v5": "^2.14.6",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "css-loader": "^6.5.1",
