@@ -24,10 +24,10 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material';
-import { StyledContainer, GlassCard } from './styles';
-import WebsiteFormDialog from './components/WebsiteFormDialog';
+import { StyledContainer, GlassCard } from '../websites/styles';
+import AISiteFormDialog from './components/AISiteFormDialog';
 
-interface Website {
+interface AISite {
   _id: string;
   title: string;
   description: string;
@@ -50,27 +50,23 @@ interface FilterParams {
   type: string;
 }
 
-// 预定义的网站类型
-const WEBSITE_TYPES = [
-  'browser',
-  'app',
-  'news',
-  'music',
-  'tech',
-  'photos',
-  'life',
-  'education',
-  'entertainment',
-  'shopping',
-  'social',
-  'read',
-  'sports',
-  'finance',
+// 预定义的 AI 工具类型
+const AI_SITE_TYPES = [
+  'chat',
+  'image',
+  'audio',
+  'video',
+  'code',
+  'writing',
+  'translation',
+  'search',
+  'productivity',
   'others'
 ];
 
-export default function WebsitesPage() {
-  const [websites, setWebsites] = useState<Website[]>([]);
+export default function AISitesPage() {
+  const [aisites, setAISites] = useState<AISite[]>([]);
+  const [allAISites, setAllAISites] = useState<AISite[]>([]);
   const [filters, setFilters] = useState<FilterParams>({
     search: '',
     type: '',
@@ -83,11 +79,11 @@ export default function WebsitesPage() {
   });
   const [loading, setLoading] = useState(true);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedWebsite, setSelectedWebsite] = useState<Website | null>(null);
+  const [selectedAISite, setSelectedAISite] = useState<AISite | null>(null);
   const [formDialogOpen, setFormDialogOpen] = useState(false);
-  const [isNewWebsite, setIsNewWebsite] = useState(false);
+  const [isNewAISite, setIsNewAISite] = useState(false);
 
-  const fetchWebsites = useCallback(async () => {
+  const fetchAISites = useCallback(async () => {
     try {
       setLoading(true);
       // 构建查询参数
@@ -101,30 +97,30 @@ export default function WebsitesPage() {
       queryParams.append('page', pagination.page.toString());
       queryParams.append('limit', pagination.pageSize.toString());
 
-      const response = await fetch(`/api/websites?${queryParams.toString()}`);
-      if (!response.ok) throw new Error('获取网站列表失败');
+      const response = await fetch(`/api/aisites?${queryParams.toString()}`);
+      if (!response.ok) throw new Error('获取 AI 工具列表失败');
       const data = await response.json();
       
-      setWebsites(data.websites);
+      setAISites(data.aisites);
       setPagination(prev => ({
         ...prev,
         total: data.pagination.total,
         pages: data.pagination.pages,
       }));
     } catch (error) {
-      console.error('Failed to fetch websites:', error);
-      setWebsites([]);
+      console.error('Failed to fetch AI sites:', error);
+      setAISites([]);
     } finally {
       setLoading(false);
     }
   }, [filters, pagination.page, pagination.pageSize]);
 
   useEffect(() => {
-    fetchWebsites();
-  }, [fetchWebsites]);
+    fetchAISites();
+  }, [fetchAISites]);
 
   const handleSearch = () => {
-    setPagination(prev => ({ ...prev, page: 1 }));
+    // 搜索已经通过 useEffect 自动触发
   };
 
   const handleSearchKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -134,47 +130,52 @@ export default function WebsitesPage() {
   };
 
   const handleAdd = () => {
-    setIsNewWebsite(true);
-    setSelectedWebsite(null);
+    setIsNewAISite(true);
+    setSelectedAISite(null);
     setFormDialogOpen(true);
   };
 
-  const handleEdit = (website: Website) => {
-    setIsNewWebsite(false);
-    setSelectedWebsite(website);
+  const handleEdit = (aisite: AISite) => {
+    setIsNewAISite(false);
+    setSelectedAISite(aisite);
     setFormDialogOpen(true);
   };
 
-  const handleDelete = (website: Website) => {
-    setSelectedWebsite(website);
+  const handleDelete = (aisite: AISite) => {
+    setSelectedAISite(aisite);
     setDeleteDialogOpen(true);
   };
 
-  const handleFormSubmit = async (formData: Omit<Website, '_id'>) => {
-    const url = isNewWebsite ? '/api/websites' : `/api/websites/${selectedWebsite?._id}`;
-    const method = isNewWebsite ? 'POST' : 'PUT';
+  const handleFormSubmit = async (formData: Omit<AISite, '_id'>) => {
+    const url = isNewAISite ? '/api/aisites' : `/api/aisites/${selectedAISite?._id}`;
+    const method = isNewAISite ? 'POST' : 'PUT';
 
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (!response.ok) {
-      throw new Error('操作失败');
+      if (!response.ok) {
+        throw new Error('操作失败');
+      }
+
+      setFormDialogOpen(false);
+      fetchAISites();
+    } catch (error) {
+      console.error('Failed to save AI site:', error);
+      alert('保存失败，请重试');
     }
-
-    setFormDialogOpen(false);
-    fetchWebsites();
   };
 
   const handleDeleteConfirm = async () => {
-    if (!selectedWebsite) return;
+    if (!selectedAISite) return;
 
     try {
-      const response = await fetch(`/api/websites/${selectedWebsite._id}`, {
+      const response = await fetch(`/api/aisites/${selectedAISite._id}`, {
         method: 'DELETE',
       });
 
@@ -183,9 +184,9 @@ export default function WebsitesPage() {
       }
 
       setDeleteDialogOpen(false);
-      fetchWebsites();
+      fetchAISites();
     } catch (error) {
-      console.error('Failed to delete website:', error);
+      console.error('Failed to delete AI site:', error);
       alert('删除失败，请重试');
     }
   };
@@ -195,7 +196,7 @@ export default function WebsitesPage() {
       <GlassCard>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Typography variant="h5" component="h1">
-            网站管理
+            AI 工具管理
           </Typography>
           <Button
             variant="contained"
@@ -229,9 +230,9 @@ export default function WebsitesPage() {
               onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
             >
               <MenuItem value="">全部</MenuItem>
-              {WEBSITE_TYPES.map((type) => (
+              {AI_SITE_TYPES.map((type) => (
                 <MenuItem key={type} value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  {type}
                 </MenuItem>
               ))}
             </Select>
@@ -255,16 +256,16 @@ export default function WebsitesPage() {
                 <tr>
                   <td colSpan={6} style={{ textAlign: 'center', padding: '20px' }}>加载中...</td>
                 </tr>
-              ) : websites.length === 0 ? (
+              ) : aisites.length === 0 ? (
                 <tr>
                   <td colSpan={6} style={{ textAlign: 'center', padding: '20px' }}>暂无数据</td>
                 </tr>
               ) : (
-                websites.map((website) => (
-                  <tr key={website._id}>
+                aisites.map((aisite) => (
+                  <tr key={aisite._id}>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}>
-                      {website.icon ? (
-                        website.iconType === 'svg' ? (
+                      {aisite.icon ? (
+                        aisite.iconType === 'svg' ? (
                           <Box
                             component="div"
                             sx={{
@@ -279,14 +280,14 @@ export default function WebsitesPage() {
                               },
                             }}
                             dangerouslySetInnerHTML={{
-                              __html: website.iconValue || '',
+                              __html: aisite.iconValue || '',
                             }}
                           />
                         ) : (
                           <Box
                             component="img"
-                            src={website.icon}
-                            alt={website.title}
+                            src={aisite.icon}
+                            alt={aisite.title}
                             sx={{
                               width: 32,
                               height: 32,
@@ -316,9 +317,9 @@ export default function WebsitesPage() {
                         </Box>
                       )}
                     </td>
-                    <td style={{ padding: '12px 8px' }}>{website.title}</td>
-                    <td style={{ padding: '12px 8px' }}>{website.description}</td>
-                    <td style={{ padding: '12px 8px' }}>{website.type}</td>
+                    <td style={{ padding: '12px 8px' }}>{aisite.title}</td>
+                    <td style={{ padding: '12px 8px' }}>{aisite.description}</td>
+                    <td style={{ padding: '12px 8px' }}>{aisite.type}</td>
                     <td style={{ 
                       padding: '12px 8px',
                       maxWidth: '200px',
@@ -327,7 +328,7 @@ export default function WebsitesPage() {
                       whiteSpace: 'nowrap'
                     }}>
                       <a 
-                        href={website.url} 
+                        href={aisite.url} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         style={{
@@ -341,19 +342,19 @@ export default function WebsitesPage() {
                           e.currentTarget.style.textDecoration = 'none';
                         }}
                       >
-                        {website.url}
+                        {aisite.url}
                       </a>
                     </td>
                     <td style={{ padding: '12px 8px', textAlign: 'center' }}>
                       <IconButton 
-                        onClick={() => handleEdit(website)} 
+                        onClick={() => handleEdit(aisite)} 
                         size="small"
                         sx={{ mr: 1 }}
                       >
                         <EditIcon />
                       </IconButton>
                       <IconButton 
-                        onClick={() => handleDelete(website)} 
+                        onClick={() => handleDelete(aisite)} 
                         size="small"
                         color="error"
                       >
@@ -391,19 +392,18 @@ export default function WebsitesPage() {
         </Box>
       </GlassCard>
 
-      <WebsiteFormDialog
+      <AISiteFormDialog
         open={formDialogOpen}
         onClose={() => setFormDialogOpen(false)}
         onSubmit={handleFormSubmit}
-        initialData={selectedWebsite}
-        title={isNewWebsite ? '添加网站' : '编辑网站'}
-        websiteTypes={WEBSITE_TYPES}
+        aisite={selectedAISite}
+        isNew={isNewAISite}
       />
 
       <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
         <DialogTitle>确认删除</DialogTitle>
         <DialogContent>
-          确定要删除 {selectedWebsite?.title} 吗？此操作不可恢复。
+          确定要删除 {selectedAISite?.title} 吗？此操作不可恢复。
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>取消</Button>

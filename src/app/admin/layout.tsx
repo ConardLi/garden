@@ -23,6 +23,7 @@ import {
   Dashboard as DashboardIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
+  SmartToy as SmartToyIcon,
 } from "@mui/icons-material";
 import { useRouter, usePathname } from "next/navigation";
 
@@ -31,6 +32,7 @@ const drawerWidth = 240;
 const menuItems = [
   { title: "仪表盘", path: "/admin", icon: <DashboardIcon /> },
   { title: "网站管理", path: "/admin/websites", icon: <LanguageIcon /> },
+  { title: "AI 工具", path: "/admin/aisites", icon: <SmartToyIcon /> },
   { title: "系统设置", path: "/admin/settings", icon: <SettingsIcon /> },
 ];
 
