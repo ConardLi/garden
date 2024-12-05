@@ -6,6 +6,7 @@ import BuildIcon from '@mui/icons-material/Build';
 import LanguageIcon from '@mui/icons-material/Language';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SettingsIcon from '@mui/icons-material/Settings';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 const NavContainer = styled(Box)(({ theme }) => ({
   width: '50px',
@@ -102,6 +103,7 @@ const navItems = [
   { id: 'tools', label: '工具', icon: <BuildIcon /> },
   { id: 'websites', label: '网站', icon: <LanguageIcon /> },
   { id: 'ai', label: 'AI', icon: <SmartToyIcon /> },
+  { id: 'prompts', label: '提示词', icon: <AutoAwesomeIcon /> },
 ];
 
 const WorkspaceNav: React.FC<WorkspaceNavProps> = ({ activeTab, onTabChange }) => {

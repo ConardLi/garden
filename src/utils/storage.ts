@@ -3,6 +3,7 @@ const STORAGE_KEYS = {
   FAVORITE_TOOLS: 'favorite_tools',
   FAVORITE_WEBSITES: 'favorite_websites',
   FAVORITE_AI_WEBSITES: 'favorite_ai_websites',
+  FAVORITE_PROMPTS: 'favorite_prompts',
 } as const;
 
 // 默认收藏的工具
@@ -150,4 +151,29 @@ export const toggleFavoriteAIWebsite = (websiteTitle: string): string[] => {
 export const isFavoriteAIWebsite = (websiteTitle: string): boolean => {
   const favorites = getFavoriteAIWebsites();
   return favorites.includes(websiteTitle);
+};
+
+// Prompt favorites
+const FAVORITE_PROMPTS_KEY = STORAGE_KEYS.FAVORITE_PROMPTS;
+
+export const getFavoritePrompts = (): string[] => {
+  if (typeof window === 'undefined') return [];
+  const storage = getLocalStorage();
+  const favorites = storage?.getItem(FAVORITE_PROMPTS_KEY);
+  return favorites ? JSON.parse(favorites) : [];
+};
+
+export const toggleFavoritePrompt = (promptId: string): string[] => {
+  const favorites = getFavoritePrompts();
+  const index = favorites.indexOf(promptId);
+  
+  if (index === -1) {
+    favorites.push(promptId);
+  } else {
+    favorites.splice(index, 1);
+  }
+  
+  const storage = getLocalStorage();
+  storage?.setItem(FAVORITE_PROMPTS_KEY, JSON.stringify(favorites));
+  return favorites;
 };

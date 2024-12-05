@@ -18,7 +18,6 @@ import SchoolIcon from '@mui/icons-material/School';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
-import aiData from './ai.json';
 
 export const AI_TAGS: AITagType[] = [
   '全部',
@@ -59,29 +58,3 @@ export const TAG_TO_ICON: { [key: string]: OverridableComponent<SvgIconTypeMap<{
   '模型评测': AssessmentIcon,
   '学习网站': SchoolIcon
 };
-
-// 获取原始的网站列表（保留重复项）
-export const AI_WEBSITES_WITH_DUPLICATES: AIWebsite[] = Object.entries(aiData).flatMap(([tag, websites]) =>
-  (websites as AIWebsite[]).map(website => ({
-    ...website,
-    tags: [tag as AITagType]
-  }))
-);
-
-// 获取去重后的网站列表（用于"全部"标签）
-export const AI_WEBSITES_UNIQUE: AIWebsite[] = Array.from(
-  new Map(
-    AI_WEBSITES_WITH_DUPLICATES.map(website => [
-      website.title,
-      {
-        ...website,
-        // 合并所有相同标题网站的标签
-        tags: Array.from(new Set(
-          AI_WEBSITES_WITH_DUPLICATES
-            .filter(w => w.title === website.title)
-            .flatMap(w => w.tags || [])
-        ))
-      }
-    ])
-  ).values()
-);
