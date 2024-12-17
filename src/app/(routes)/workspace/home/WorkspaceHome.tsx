@@ -7,12 +7,14 @@ import ToolCard from "@/components/workspace/ToolCard";
 import SimpleAICard from "@/components/workspace//SimpleAICard";
 import AddFavoriteCard from "@/components/workspace/AddFavoriteCard";
 import { TOOLS } from "@/constants/tools";
-import { WEBSITES } from "@/constants/websites";
-import { AI_WEBSITES_UNIQUE } from "@/constants/ai";
+
 import {
   getFavoriteTools,
   getFavoriteWebsites,
   getFavoriteAIWebsites,
+  toggleFavoriteWebsite,
+  toggleFavoriteAIWebsite,
+  toggleFavoriteTool,
 } from "@/utils/storage";
 
 const ContentSection = styled(Box)(({ theme }) => ({
@@ -36,11 +38,8 @@ const Section = styled(Box)(({ theme }) => ({
 const WorkspaceHome: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [favoriteTools, setFavoriteTools] = React.useState<string[]>([]);
-  const [favoriteWebsites, setFavoriteWebsites] = React.useState<string[]>([]);
-  const [favoriteAIWebsites, setFavoriteAIWebsites] = React.useState<string[]>(
-    []
-  );
   const [websites, setWebsites] = React.useState<any[]>([]);
+  const [aiWebsites, setAIWebsites] = React.useState<any[]>([]);
 
   const fetchFavoriteWebsites = React.useCallback(async (titles: string[]) => {
     if (titles.length === 0) {
@@ -70,21 +69,71 @@ const WorkspaceHome: React.FC = () => {
     }
   }, []);
 
+  const fetchFavoriteAIWebsites = React.useCallback(
+    async (titles: string[]) => {
+      if (titles.length === 0) {
+        setAIWebsites([]);
+        return;
+      }
+      try {
+        const params = new URLSearchParams({
+          titles: titles.join(","),
+          limit: titles.length.toString(),
+        });
+        const response = await fetch(`/api/aisites?${params}`);
+        const data = await response.json();
+
+        // 根据 title 去重
+        const uniqueAIWebsites = data.aisites.reduce(
+          (acc: any[], curr: any) => {
+            if (!acc.find((item: any) => item.title === curr.title)) {
+              acc.push(curr);
+            }
+            return acc;
+          },
+          []
+        );
+
+        setAIWebsites(uniqueAIWebsites);
+      } catch (error) {
+        console.error("Error fetching favorite AI websites:", error);
+        setAIWebsites([]);
+      }
+    },
+    []
+  );
+
+  const handleUnfavoriteTool = (toolId: string) => {
+    const updatedFavorites = toggleFavoriteTool(toolId);
+    setFavoriteTools(updatedFavorites);
+  };
+
+  const handleUnfavoriteWebsite = (website: any) => {
+    const updatedFavorites = toggleFavoriteWebsite(website.title);
+    fetchFavoriteWebsites(updatedFavorites);
+  };
+
+  const handleUnfavoriteAIWebsite = (website: any) => {
+    const updatedFavorites = toggleFavoriteAIWebsite(website.title);
+    fetchFavoriteAIWebsites(updatedFavorites);
+  };
+
   React.useEffect(() => {
     const loadData = async () => {
       const tools = getFavoriteTools();
       const websiteTitles = getFavoriteWebsites();
-      const aiWebsites = getFavoriteAIWebsites();
+      const aiWebsiteTitles = getFavoriteAIWebsites();
 
       setFavoriteTools(tools);
-      setFavoriteWebsites(websiteTitles);
-      setFavoriteAIWebsites(aiWebsites);
 
-      await fetchFavoriteWebsites(websiteTitles);
+      await Promise.all([
+        fetchFavoriteWebsites(websiteTitles),
+        fetchFavoriteAIWebsites(aiWebsiteTitles),
+      ]);
       setIsLoading(false);
     };
     loadData();
-  }, [fetchFavoriteWebsites]);
+  }, [fetchFavoriteWebsites, fetchFavoriteAIWebsites]);
 
   const handleToolClick = (toolId: string) => {
     window.open(`/tools/${toolId}`, "_blank");
@@ -96,9 +145,6 @@ const WorkspaceHome: React.FC = () => {
 
   const favoriteToolsList = TOOLS.filter((tool) =>
     favoriteTools.includes(tool.id)
-  );
-  const favoriteAIWebsitesList = AI_WEBSITES_UNIQUE.filter((website) =>
-    favoriteAIWebsites.includes(website.title)
   );
 
   if (isLoading) {
@@ -116,6 +162,7 @@ const WorkspaceHome: React.FC = () => {
                   name={tool.name}
                   icon={tool.icon}
                   onClick={() => handleToolClick(tool.id)}
+                  onUnfavorite={() => handleUnfavoriteTool(tool.id)}
                 />
               </Grid>
             ))}
@@ -125,15 +172,17 @@ const WorkspaceHome: React.FC = () => {
                 <SimpleAICard
                   website={website}
                   onClick={() => handleWebsiteClick(website.url)}
+                  onUnfavorite={handleUnfavoriteWebsite}
                 />
               </Grid>
             ))}
 
-            {favoriteAIWebsitesList.map((website) => (
+            {aiWebsites.map((website) => (
               <Grid item xs={3} sm={2} md={1.5} lg={1} key={website.title}>
                 <SimpleAICard
                   website={website}
                   onClick={() => handleWebsiteClick(website.url)}
+                  onUnfavorite={handleUnfavoriteAIWebsite}
                 />
               </Grid>
             ))}
@@ -144,36 +193,6 @@ const WorkspaceHome: React.FC = () => {
           </Grid>
         </Section>
       )}
-
-      {/* {websites.length > 0 && (
-        <Section>
-          <Grid container spacing={1.5}>
-            {websites.map((website) => (
-              <Grid item xs={3} sm={2} md={1.5} lg={1} key={website.title}>
-                <SimpleAICard
-                  website={website}
-                  onClick={() => handleWebsiteClick(website.url)}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Section>
-      )}
-
-      {favoriteAIWebsitesList.length > 0 && (
-        <Section>
-          <Grid container spacing={1.5}>
-            {favoriteAIWebsitesList.map((website) => (
-              <Grid item xs={3} sm={2} md={1.5} lg={1} key={website.title}>
-                <SimpleAICard
-                  website={website}
-                  onClick={() => handleWebsiteClick(website.url)}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Section>
-      )} */}
     </ContentSection>
   );
 };

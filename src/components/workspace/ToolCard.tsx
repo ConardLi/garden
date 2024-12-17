@@ -8,6 +8,8 @@ import {
   Tooltip,
   tooltipClasses,
   TooltipProps,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import * as MuiIcons from '@mui/icons-material';
 
@@ -74,28 +76,72 @@ interface ToolCardProps {
   name: string;
   icon: string;
   onClick: () => void;
+  onUnfavorite?: () => void;
 }
 
 const ToolCard: React.FC<ToolCardProps> = ({
   name,
   icon,
   onClick,
+  onUnfavorite,
 }) => {
   const Icon = (MuiIcons as any)[icon];
+  const [contextMenu, setContextMenu] = React.useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setContextMenu(
+      contextMenu === null
+        ? {
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+          }
+        : null
+    );
+  };
+
+  const handleClose = () => {
+    setContextMenu(null);
+  };
+
+  const handleUnfavorite = () => {
+    if (onUnfavorite) {
+      onUnfavorite();
+    }
+    handleClose();
+  };
 
   return (
-    <StyledTooltip title={name} placement="top" arrow>
-      <StyledCard onClick={onClick}>
-        <CardActionArea>
-          <Box className="icon">
-            {Icon && <Icon sx={{ fontSize: 'inherit' }} />}
-          </Box>
-          <Typography className="item-name">
-            {name}
-          </Typography>
-        </CardActionArea>
-      </StyledCard>
-    </StyledTooltip>
+    <>
+      <StyledTooltip title={name} placement="top" arrow>
+        <StyledCard onContextMenu={handleContextMenu}>
+          <CardActionArea onClick={onClick}>
+            <Box className="icon">
+              {Icon && <Icon sx={{ fontSize: 'inherit' }} />}
+            </Box>
+            <Typography className="item-name">
+              {name}
+            </Typography>
+          </CardActionArea>
+        </StyledCard>
+      </StyledTooltip>
+
+      <Menu
+        open={contextMenu !== null}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={handleUnfavorite}>取消收藏</MenuItem>
+      </Menu>
+    </>
   );
 };
 

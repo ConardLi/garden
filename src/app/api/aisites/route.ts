@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), MAX_LIMIT);
     const type = searchParams.get('type');
     const search = searchParams.get('search');
+    const titles = searchParams.get('titles')?.split(',');
+
 
     const query: any = {};
 
@@ -26,6 +28,12 @@ export async function GET(request: NextRequest) {
         { description: { $regex: search, $options: 'i' } }
       ];
     }
+
+    if (titles && titles.length > 0) {
+      query.title = { $in: titles };
+    }
+
+    console.log(22,query);
 
     const [aisites, total] = await Promise.all([
       AISite.find(query)

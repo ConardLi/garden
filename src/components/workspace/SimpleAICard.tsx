@@ -1,6 +1,6 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
-import { Card, CardActionArea, Typography, Box, Tooltip } from "@mui/material";
+import { Card, CardActionArea, Typography, Box, Tooltip, Menu, MenuItem } from "@mui/material";
 import { AIWebsite } from "../../types/ai";
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -70,6 +70,7 @@ const WebsiteName = styled(Typography)({
 interface SimpleAICardProps {
   website: AIWebsite;
   onClick: () => void;
+  onUnfavorite?: (website: AIWebsite) => void;
 }
 
 const IconImage = React.memo(({ website }: { website: AIWebsite }) => {
@@ -96,16 +97,44 @@ const IconImage = React.memo(({ website }: { website: AIWebsite }) => {
     );
   }
 
-  const iconPath = website.iconType ? website.icon : `/ai/${website.icon}`;
+  const iconPath = website.icon;
   return <img src={iconPath} alt={website.title} />;
 });
 
-const SimpleAICard: React.FC<SimpleAICardProps> = React.memo(
-  ({ website, onClick }) => {
-    return (
-      <Tooltip title={website.description} arrow placement="top">
-        <StyledCard onClick={onClick}>
-          <StyledCardActionArea>
+const SimpleAICard: React.FC<SimpleAICardProps> = ({ website, onClick, onUnfavorite }) => {
+  const [contextMenu, setContextMenu] = React.useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault();
+    setContextMenu(
+      contextMenu === null
+        ? {
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+          }
+        : null
+    );
+  };
+
+  const handleClose = () => {
+    setContextMenu(null);
+  };
+
+  const handleUnfavorite = () => {
+    if (onUnfavorite) {
+      onUnfavorite(website);
+    }
+    handleClose();
+  };
+
+  return (
+    <>
+      <Tooltip title={website.description || website.title} arrow placement="top">
+        <StyledCard onContextMenu={handleContextMenu}>
+          <StyledCardActionArea onClick={onClick}>
             {website.iconType ? (
               <LargeIconContainer>
                 <IconImage website={website} />
@@ -119,9 +148,22 @@ const SimpleAICard: React.FC<SimpleAICardProps> = React.memo(
           </StyledCardActionArea>
         </StyledCard>
       </Tooltip>
-    );
-  }
-);
+
+      <Menu
+        open={contextMenu !== null}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+            : undefined
+        }
+      >
+        <MenuItem onClick={handleUnfavorite}>取消收藏</MenuItem>
+      </Menu>
+    </>
+  );
+};
 
 SimpleAICard.displayName = "SimpleAICard";
 
