@@ -4,6 +4,17 @@ import { connectDB } from '@/lib/db';
 
 const MAX_LIMIT = 50;
 
+// 列表接口只返回必要字段
+const LIST_FIELDS = {
+  _id: 1,
+  title: 1,
+  description: 1,
+  tags: 1,
+  enTitle: 1,
+  enDescription: 1,
+  enTags: 1,
+};
+
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
@@ -38,7 +49,7 @@ export async function GET(request: NextRequest) {
     }
 
     const [prompts, total] = await Promise.all([
-      Prompt.find(query)
+      Prompt.find(query, LIST_FIELDS)
         .skip((page - 1) * limit)
         .limit(limit)
         .lean(),

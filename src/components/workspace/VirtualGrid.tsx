@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from "react";
+import React, { useCallback, memo, useRef, useState, useEffect } from "react";
 import { FixedSizeGrid, GridChildComponentProps } from "react-window";
 import { Box } from "@mui/material";
 import useWindowSize from "../../hooks/useWindowSize";
@@ -14,15 +14,32 @@ interface VirtualGridProps {
 const VirtualGrid: React.FC<VirtualGridProps> = memo(
   ({ items, itemHeight, renderItem, gap = 16, minItemWidth = 300 }) => {
     const windowSize = useWindowSize();
-    const containerWidth = Math.min(windowSize.width - 48, 1600);
+    
+    // 获取父容器的宽度
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [containerWidth, setContainerWidth] = useState(0);
 
-    // 计算每行可以放置的列数
+    useEffect(() => {
+      const updateWidth = () => {
+        if (containerRef.current) {
+          const width = containerRef.current.offsetWidth;
+          setContainerWidth(width);
+        }
+      };
+
+      updateWidth();
+      window.addEventListener('resize', updateWidth);
+      return () => window.removeEventListener('resize', updateWidth);
+    }, []);
+
+    // 计算每行可以放置的列数，确保不会出现截断
     const columnCount = Math.max(
       1,
       Math.floor((containerWidth + gap) / (minItemWidth + gap))
     );
-    const columnWidth =
-      (containerWidth - (columnCount - 1) * gap) / columnCount;
+
+    // 计算实际的列宽，确保填满容器
+    const columnWidth = (containerWidth - (columnCount - 1) * gap) / columnCount;
 
     // 计算总行数
     const rowCount = Math.ceil(items.length / columnCount);
@@ -46,22 +63,24 @@ const VirtualGrid: React.FC<VirtualGridProps> = memo(
 
     return (
       <Box
+        ref={containerRef}
         sx={{
           width: "100%",
-          maxWidth: 1600,
-          margin: "0 auto",
+          overflow: "hidden",
         }}
       >
-        <FixedSizeGrid
-          columnCount={columnCount}
-          columnWidth={columnWidth}
-          height={Math.min(windowSize.height - 200, rowCount * itemHeight + gap)}
-          rowCount={rowCount}
-          rowHeight={itemHeight}
-          width={containerWidth}
-        >
-          {Cell}
-        </FixedSizeGrid>
+        {containerWidth > 0 && (
+          <FixedSizeGrid
+            columnCount={columnCount}
+            columnWidth={columnWidth}
+            height={rowCount * itemHeight}
+            rowCount={rowCount}
+            rowHeight={itemHeight}
+            width={containerWidth}
+          >
+            {Cell}
+          </FixedSizeGrid>
+        )}
       </Box>
     );
   }
