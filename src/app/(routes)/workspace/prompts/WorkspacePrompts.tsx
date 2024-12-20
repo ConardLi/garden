@@ -34,7 +34,9 @@ const WorkspacePrompts: React.FC<WorkspacePromptsProps> = React.memo(
     const [page, setPage] = React.useState(1);
     const [totalPages, setTotalPages] = React.useState(1);
     const [selectedTag, setSelectedTag] = React.useState<string>("");
-    const [selectedPromptId, setSelectedPromptId] = React.useState<string | null>(null);
+    const [selectedPromptId, setSelectedPromptId] = React.useState<
+      string | null
+    >(null);
 
     // 从 URL 恢复状态
     React.useEffect(() => {
@@ -45,17 +47,26 @@ const WorkspacePrompts: React.FC<WorkspacePromptsProps> = React.memo(
     }, [searchParams]);
 
     // 更新 URL
-    const updateURL = React.useCallback((newTag: string, newPage: number) => {
-      const params = new URLSearchParams();
-      if (newTag) {
+    const updateURL = React.useCallback(
+      (newTag: string, newPage: number) => {
+        const params = new URLSearchParams();
         params.set("tag", newTag);
+        if (newPage > 1) {
+          params.set("page", newPage.toString());
+        }
+        const query = params.toString();
+        router.push(query ? `?${query}` : "");
+      },
+      [router]
+    );
+
+    // 监听搜索文本变化，重置标签选择
+    React.useEffect(() => {
+      if (searchText) {
+        setSelectedTag("");
+        updateURL("", page);
       }
-      if (newPage > 1) {
-        params.set("page", newPage.toString());
-      }
-      const query = params.toString();
-      router.push(query ? `?${query}` : "");
-    }, [router]);
+    }, [searchText, page, updateURL]);
 
     // 获取提示词数据
     const fetchPrompts = React.useCallback(async () => {
@@ -70,13 +81,14 @@ const WorkspacePrompts: React.FC<WorkspacePromptsProps> = React.memo(
         }
         queryParams.append("page", page.toString());
         queryParams.append("limit", "16");
+        queryParams.append("hide", "1");
 
         const response = await fetch(`/api/prompts?${queryParams.toString()}`);
         if (!response.ok) throw new Error("获取提示词列表失败");
         const data = await response.json();
 
         setPrompts(data.prompts);
-        setTotalPages(data.totalPages);
+        setTotalPages(data.pagination.pages);
         setFavoritePrompts(getFavoritePrompts());
       } catch (error) {
         console.error("获取提示词列表失败:", error);
@@ -89,7 +101,10 @@ const WorkspacePrompts: React.FC<WorkspacePromptsProps> = React.memo(
       fetchPrompts();
     }, [fetchPrompts]);
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (
+      event: React.ChangeEvent<unknown>,
+      value: number
+    ) => {
       setPage(value);
       updateURL(selectedTag, value);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -124,10 +139,7 @@ const WorkspacePrompts: React.FC<WorkspacePromptsProps> = React.memo(
           onPageChange={handlePageChange}
           onPromptClick={handlePromptClick}
         />
-        <PromptDialog
-          promptId={selectedPromptId}
-          onClose={handleCloseDialog}
-        />
+        <PromptDialog promptId={selectedPromptId} onClose={handleCloseDialog} />
       </ContentSection>
     );
   }

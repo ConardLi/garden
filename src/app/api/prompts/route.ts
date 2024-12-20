@@ -4,14 +4,28 @@ import { connectDB } from '@/lib/db';
 
 const MAX_LIMIT = 50;
 
-// 列表接口只返回必要字段
-const LIST_FIELDS = {
+const LIST_FIELDS1 = {
   _id: 1,
   title: 1,
   description: 1,
   tags: 1,
   enTitle: 1,
   enDescription: 1,
+  enTags: 1,
+};
+
+
+// 列表接口只返回必要字段
+const LIST_FIELDS = {
+  _id: 1,
+  title: 1,
+  description: 1,
+  prompt: 1,
+  enTitle: 1,
+  enDescription: 1,
+  enPrompt: 1,
+  source: 1,
+  tags: 1,
   enTags: 1,
 };
 
@@ -24,6 +38,7 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '10'), MAX_LIMIT);
     const source = searchParams.get('source');
     const search = searchParams.get('search');
+    const hide = searchParams.get('hide');
     const tags = searchParams.get('tags')?.split(',').filter(Boolean);
 
     const query: any = {};
@@ -32,7 +47,7 @@ export async function GET(request: NextRequest) {
       query.source = parseInt(source);
     }
 
-    if (tags && tags.length > 0) {
+    if (tags && tags.length > 0 && tags[0] !== '全部') {
       query.$or = [
         { tags: { $in: tags } },
         { enTags: { $in: tags } }
@@ -49,7 +64,7 @@ export async function GET(request: NextRequest) {
     }
 
     const [prompts, total] = await Promise.all([
-      Prompt.find(query, LIST_FIELDS)
+      Prompt.find(query, hide ? LIST_FIELDS1 : LIST_FIELDS)
         .skip((page - 1) * limit)
         .limit(limit)
         .lean(),

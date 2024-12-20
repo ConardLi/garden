@@ -1,4 +1,6 @@
 export const PROMPT_TAGS = [
+  "全部",
+  "精选",
   "学习",
   "写作",
   "角色扮演",
