@@ -79,6 +79,132 @@ export const TOOLS: Tool[] = [
     description: 'Unix时间戳与日期时间互转工具',
     icon: 'AccessTime',
     tags: ['开发工具']
+  },
+  // 开发工具
+  {
+    id: 'code-formatter',
+    name: '代码格式化',
+    description: '支持多种编程语言的代码格式化工具',
+    icon: 'Code',
+    tags: ['开发工具']
+  },
+  {
+    id: 'base64',
+    name: 'Base64 转换',
+    description: '文本和图片的 Base64 编解码工具',
+    icon: 'DataObject',
+    tags: ['开发工具']
+  },
+  {
+    id: 'regex-tester',
+    name: '正则测试',
+    description: '正则表达式在线测试工具',
+    icon: 'Functions',
+    tags: ['开发工具']
+  },
+  {
+    id: 'api-tester',
+    name: 'API 测试',
+    description: 'HTTP 接口测试工具',
+    icon: 'Api',
+    tags: ['开发工具']
+  },
+  // 文本工具
+  {
+    id: 'text-diff',
+    name: '文本比较',
+    description: '对比两段文本的差异',
+    icon: 'Compare',
+    tags: ['文本工具']
+  },
+  {
+    id: 'text-case',
+    name: '文本转换',
+    description: '大小写转换、驼峰下划线互转等',
+    icon: 'TextFields',
+    tags: ['文本工具']
+  },
+  {
+    id: 'markdown-editor',
+    name: 'Markdown 编辑器',
+    description: '在线 Markdown 编辑预览工具',
+    icon: 'Edit',
+    tags: ['文本工具']
+  },
+  // 图片工具
+  {
+    id: 'image-editor',
+    name: '图片编辑',
+    description: '裁剪、旋转、滤镜等图片编辑功能',
+    icon: 'Edit',
+    tags: ['图片工具']
+  },
+  {
+    id: 'image-background-remover',
+    name: '图片背景移除',
+    description: 'AI 智能抠图工具',
+    icon: 'FilterNone',
+    tags: ['图片工具']
+  },
+  // 设计工具
+  {
+    id: 'gradient-generator',
+    name: '渐变生成器',
+    description: 'CSS 渐变配色工具',
+    icon: 'Gradient',
+    tags: ['设计工具']
+  },
+  {
+    id: 'shadow-generator',
+    name: '阴影生成器',
+    description: 'CSS Box-shadow 可视化编辑工具',
+    icon: 'Layers',
+    tags: ['设计工具']
+  },
+  // 文件工具
+  {
+    id: 'pdf-tools',
+    name: 'PDF 工具集',
+    description: 'PDF 合并、分割、转换等功能',
+    icon: 'PictureAsPdf',
+    tags: ['文件工具']
+  },
+  {
+    id: 'file-converter',
+    name: '文件转换',
+    description: '音频、视频、文档格式转换工具',
+    icon: 'SwapHoriz',
+    tags: ['转换工具']
+  },
+  // 网络工具
+  {
+    id: 'website-analyzer',
+    name: '网站分析',
+    description: '网站性能和 SEO 检测工具',
+    icon: 'Speed',
+    tags: ['网络工具']
+  },
+  {
+    id: 'ssl-checker',
+    name: 'SSL 证书检测',
+    description: '检查网站 SSL 证书状态',
+    icon: 'Security',
+    tags: ['网络工具']
+  },
+  // 生活工具
+  {
+    id: 'unit-converter',
+    name: '单位换算',
+    description: '常用单位换算工具',
+    icon: 'Calculate',
+    tags: ['转换工具']
+  },
+  {
+    id: 'random-generator',
+    name: '随机生成器',
+    description: '生成随机密码、UUID等',
+    icon: 'Casino',
+    tags: ['开发工具']
   }
 ]; 
 

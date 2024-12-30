@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { FC, ReactNode } from 'react';
-import { Container, Stack, Typography } from '@mui/material';
-import { motion } from 'framer-motion';
-import ToolLayout from '../ToolLayout';
-import { useTitle } from '../../hooks/useTitle';
+import { FC, ReactNode } from "react";
+import { Container, Stack, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import ToolLayout from "../ToolLayout";
+import { useTitle } from "../../hooks/useTitle";
 
 interface ToolPageLayoutProps {
   title: string;
@@ -21,13 +21,13 @@ const ToolPageLayout: FC<ToolPageLayoutProps> = ({ title, children }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          style={{ height: '100%' }}
+          style={{ height: "100%" }}
         >
-          <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+          {/* <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
             <Typography variant="h4" component="h1" fontWeight="bold">
               {title}
             </Typography>
-          </Stack>
+          </Stack> */}
 
           {children}
         </motion.div>
@@ -36,4 +36,4 @@ const ToolPageLayout: FC<ToolPageLayoutProps> = ({ title, children }) => {
   );
 };
 
-export default ToolPageLayout; 
+export default ToolPageLayout;

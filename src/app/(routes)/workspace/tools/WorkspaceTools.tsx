@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Pagination, Stack } from '@mui/material';
 import ItemCard from '@/components/workspace/ItemCard';
 import TagFilter from '@/components/workspace/TagFilter';
 import { TOOLS, TAGS, TAG_TO_ICON } from '@/constants/tools';
@@ -25,11 +25,14 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
   onTagChange,
   searchText = '',
 }) => {
-  const { params, updateParams } = useQueryParams<{ toolTag: string }>({
+  const { params, updateParams } = useQueryParams<{ toolTag: string; page: string }>({
     toolTag: '',
+    page: '1',
   });
 
   const selectedTag = propSelectedTag || params.toolTag || '';
+  const currentPage = parseInt(params.page) || 1;
+  const itemsPerPage = 24;
 
   const [favoriteTools, setFavoriteTools] = React.useState<string[]>([]);
 
@@ -42,7 +45,7 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
     if (onTagChange) {
       onTagChange(newTag);
     } else {
-      updateParams({ toolTag: newTag });
+      updateParams({ toolTag: newTag, page: '1' });
     }
   };
 
@@ -53,6 +56,10 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
   const handleFavoriteToggle = (toolId: string) => {
     const newFavorites = toggleFavoriteTool(toolId);
     setFavoriteTools(newFavorites);
+  };
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    updateParams({ ...params, page: value.toString() });
   };
 
   const filteredTools = React.useMemo(() => {
@@ -69,6 +76,21 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
     }
 
     return tools;
+  }, [selectedTag, searchText]);
+
+  const paginatedTools = React.useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredTools.slice(startIndex, endIndex);
+  }, [filteredTools, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredTools.length / itemsPerPage);
+
+  // 当筛选条件改变时，重置页码
+  React.useEffect(() => {
+    if (searchText || selectedTag) {
+      updateParams({ ...params, page: '1' });
+    }
   }, [selectedTag, searchText]);
 
   return (
@@ -91,7 +113,7 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
         />
       </Box>
       <Grid container spacing={2}>
-        {filteredTools.map((tool) => (
+        {paginatedTools.map((tool) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={tool.id}>
             <ItemCard
               id={tool.id}
@@ -99,13 +121,37 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
               icon={tool.icon}
               description={tool.description}
               tags={tool.tags}
-              onClick={() => handleToolClick(tool.id)}
-              onFavoriteToggle={() => handleFavoriteToggle(tool.id)}
               isFavorite={favoriteTools.includes(tool.id)}
+              onFavoriteToggle={() => handleFavoriteToggle(tool.id)}
+              onClick={() => handleToolClick(tool.id)}
             />
           </Grid>
         ))}
       </Grid>
+      {totalPages > 1 && (
+        <Stack spacing={2} sx={{ mt: 4, display: 'flex', alignItems: 'center' }}>
+          <Pagination 
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            shape="rounded"
+            size="large"
+            sx={{
+              '& .MuiPaginationItem-root': {
+                color: 'rgba(255, 255, 255, 0.7)',
+                borderColor: 'rgba(255, 255, 255, 0.3)',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                },
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                },
+              },
+            }}
+          />
+        </Stack>
+      )}
     </ContentSection>
   );
 };

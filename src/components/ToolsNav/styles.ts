@@ -1,6 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
 
-export const DRAWER_WIDTH = 240;
+export const DRAWER_WIDTH = 210;
 
 // 基础导航项样式
 const baseNavItemStyles: SxProps<Theme> = {
