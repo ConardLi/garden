@@ -205,6 +205,13 @@ export const TOOLS: Tool[] = [
     description: '生成随机密码、UUID等',
     icon: 'Casino',
     tags: ['开发工具']
+  },
+  {
+    id: 'url-codec',
+    name: 'URL编码解码',
+    description: 'URL编码与解码转换工具',
+    icon: 'Link',
+    tags: ['开发工具']
   }
 ]; 
 
