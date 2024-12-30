@@ -99,7 +99,7 @@ export const TOOLS: Tool[] = [
     id: 'regex-tester',
     name: '正则测试',
     description: '正则表达式在线测试工具',
-    icon: 'Functions',
+    icon: 'Code',
     tags: ['开发工具']
   },
   {
@@ -211,6 +211,13 @@ export const TOOLS: Tool[] = [
     name: 'URL编码解码',
     description: 'URL编码与解码转换工具',
     icon: 'Link',
+    tags: ['开发工具']
+  },
+  {
+    id: 'code-diff',
+    name: '代码对比',
+    description: '对比两段代码的差异',
+    icon: 'Compare',
     tags: ['开发工具']
   }
 ]; 
