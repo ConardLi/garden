@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useQueryParams } from "@/hooks/useQueryParams";
 import { styled } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
-import WorkspaceTools from "./WorkspaceTools";
+import WorkspaceTools from "./main";
 import WorkspaceSearch from "../components/WorkspaceSearch";
 import { getStoredSearchEngine } from "@/utils/storage";
 import useDebounce from "@/hooks/useDebounce";

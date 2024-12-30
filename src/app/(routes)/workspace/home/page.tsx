@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useQueryParams } from "@/hooks/useQueryParams";
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-import WorkspaceHome from './WorkspaceHome';
+import WorkspaceHome from './main';
 import WorkspaceSearch from '../components/WorkspaceSearch';
 import { formatDate } from '@/utils/date';
 import { getStoredSearchEngine } from '@/utils/storage';
