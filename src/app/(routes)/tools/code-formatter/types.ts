@@ -5,10 +5,26 @@ export type Language =
   | 'css'
   | 'json'
   | 'markdown'
-  | 'yaml';
+  | 'yaml'
+  | 'python'
+  | 'java'
+  | 'c'
+  | 'cpp'
+  | 'csharp'
+  | 'go'
+  | 'rust'
+  | 'php'
+  | 'ruby'
+  | 'sql'
+  | 'xml'
+  | 'shell'
+  | 'powershell'
+  | 'dockerfile'
+  | 'graphql'
+  | 'less'
+  | 'scss';
 
 export interface LanguageOption {
   value: Language;
   label: string;
-  parser: string;
 } 

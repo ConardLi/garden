@@ -18,8 +18,7 @@ interface CodeEditorProps {
   onFormat: () => void;
 }
 
-const CodeEditor: FC<CodeEditorProps> = ({
-  input,
+const CodeEditor: FC<CodeEditorProps> = ({input,
   output,
   error,
   language,
@@ -58,6 +57,40 @@ const CodeEditor: FC<CodeEditorProps> = ({
         return 'markdown';
       case 'yaml':
         return 'yaml';
+      case 'python':
+        return 'python';
+      case 'java':
+        return 'java';
+      case 'c':
+        return 'c';
+      case 'cpp':
+        return 'cpp';
+      case 'csharp':
+        return 'csharp';
+      case 'go':
+        return 'go';
+      case 'rust':
+        return 'rust';
+      case 'php':
+        return 'php';
+      case 'ruby':
+        return 'ruby';
+      case 'sql':
+        return 'sql';
+      case 'xml':
+        return 'xml';
+      case 'shell':
+        return 'shell';
+      case 'powershell':
+        return 'powershell';
+      case 'dockerfile':
+        return 'dockerfile';
+      case 'graphql':
+        return 'graphql';
+      case 'less':
+        return 'less';
+      case 'scss':
+        return 'scss';
       default:
         return 'plaintext';
     }
