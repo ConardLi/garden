@@ -1,10 +1,7 @@
-import { styled, Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Paper } from '@mui/material';
 
-export const StyledContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(2.5),
-  padding: theme.spacing(2.5),
-  maxWidth: 800,
-  margin: '0 auto',
+export const MD5Container = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  backgroundColor: theme.palette.background.paper,
 })); 
