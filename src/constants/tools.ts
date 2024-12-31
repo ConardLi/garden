@@ -219,6 +219,19 @@ export const TOOLS: Tool[] = [
     description: '对比两段代码的差异',
     icon: 'Compare',
     tags: ['开发工具']
+  },{
+    id: 'uuid',
+    name: 'UUID生成',
+    description: '批量生成UUID',
+    icon: 'Guid',
+    tags: ['开发工具']
+  },
+  {
+    id: 'guid',
+    name: 'GUID生成',
+    description: '批量生成GUID',
+    icon: 'Guid',
+    tags: ['开发工具']
   }
 ]; 
 
