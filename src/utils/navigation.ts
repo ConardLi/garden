@@ -4,7 +4,7 @@ export const getToolPath = (toolId: string): string => {
     return `/tools/${toolId}`;
   }
   // 生产环境下使用实际的 HTML 文件路径
-  return `/tools/${toolId}/index.html`;
+  return `/tools/${toolId}`;
 };
 
 export const getHomePath = (): string => {

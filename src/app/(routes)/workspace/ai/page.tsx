@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useQueryParams } from "@/hooks/useQueryParams";
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -71,33 +71,35 @@ const WorkspaceContent: React.FC<WorkspaceContentProps> = ({
   };
 
   return (
-    <Container>
-      {renderTitle()}
-      <Box sx={{ width: '100%', maxWidth: '600px', mb: 4 }}>
-        <WorkspaceSearch 
-          onSearchEngineChange={handleSearchEngineChange} 
-          onSearchTextChange={handleSearchTextChange}
-          searchText={searchText}
-        />
-      </Box>
-      
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '1600px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 4,
-        }}
-      >
-        <WorkspaceAI 
-            activeTag={activeTag} 
-            onTagChange={onTagChange} 
-            searchText={debouncedSearchText}
+    <Suspense fallback={<div>Loading...</div>}>
+      <Container>
+        {renderTitle()}
+        <Box sx={{ width: '100%', maxWidth: '600px', mb: 4 }}>
+          <WorkspaceSearch 
+            onSearchEngineChange={handleSearchEngineChange} 
+            onSearchTextChange={handleSearchTextChange}
+            searchText={searchText}
           />
-      </Box>
-    </Container>
+        </Box>
+        
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: '1600px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 4,
+          }}
+        >
+          <WorkspaceAI 
+              activeTag={activeTag} 
+              onTagChange={onTagChange} 
+              searchText={debouncedSearchText}
+            />
+        </Box>
+      </Container>
+    </Suspense>
   );
 };
 
@@ -128,4 +130,12 @@ const Workspace: React.FC = () => {
   );
 };
 
-export default Workspace;
+const PageWithSuspense = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Workspace />
+    </Suspense>
+  );
+};
+
+export default PageWithSuspense;

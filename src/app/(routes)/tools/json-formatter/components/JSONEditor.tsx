@@ -70,9 +70,10 @@ const JSONEditor: FC<JSONEditorProps> = ({
 
             <Button
               variant="contained"
+              color="primary"
               startIcon={<PlayArrowIcon />}
               onClick={formatJSON}
-              disabled={!input.trim()}
+              disabled={!input?.trim()}
             >
               格式化
             </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useQueryParams } from "@/hooks/useQueryParams";
 import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
@@ -50,31 +50,41 @@ const Workspace = () => {
   };
 
   return (
-    <Container>
-      {renderTitle()}
-      <Box sx={{ width: '100%', maxWidth: '600px', mb: 4 }}>
-        <WorkspaceSearch 
-          onSearchTextChange={handleSearchTextChange}
-          searchText={searchText}
-          // @ts-ignore
-          hideSearchEngine
-        />
-      </Box>
-      
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '1600px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 4,
-        }}
-      >
-        <WorkspacePrompts searchText={debouncedSearchText} />
-      </Box>
-    </Container>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Container>
+        {renderTitle()}
+        <Box sx={{ width: '100%', maxWidth: '600px', mb: 4 }}>
+          <WorkspaceSearch 
+            onSearchTextChange={handleSearchTextChange}
+            searchText={searchText}
+            // @ts-ignore
+            hideSearchEngine
+          />
+        </Box>
+        
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: '1600px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 4,
+          }}
+        >
+          <WorkspacePrompts searchText={debouncedSearchText} />
+        </Box>
+      </Container>
+    </Suspense>
   );
 };
 
-export default Workspace;
+const PageWithSuspense = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Workspace />
+    </Suspense>
+  );
+};
+
+export default PageWithSuspense;

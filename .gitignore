@@ -6,3 +6,4 @@ ai-local.json
 .next
 secret.json
 .DS_Store
+tsconfig.tsbuildinfo
