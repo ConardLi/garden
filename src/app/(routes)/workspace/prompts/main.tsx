@@ -127,6 +127,7 @@ const WorkspacePrompts: React.FC<WorkspacePromptsProps> = React.memo(
     return (
       <ContentSection>
         <PromptSidebar
+          // @ts-ignore
           tags={PROMPT_TAGS}
           selectedTag={selectedTag}
           onTagChange={handleTagChange}

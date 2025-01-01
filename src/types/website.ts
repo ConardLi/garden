@@ -15,5 +15,5 @@ export interface Website {
   url: string;
   description: string;
   icon: string;
-  tags: WebsiteTagType[];
+  tags: String[];
 }

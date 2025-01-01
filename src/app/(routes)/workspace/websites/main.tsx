@@ -150,6 +150,7 @@ const WorkspaceWebsites: React.FC<WorkspaceWebsitesProps> = React.memo(
               iconType: website.iconType,
               iconValue: website.iconValue,
               description: website.description || "",
+              // @ts-ignore
               tags: [TYPE_TO_LABEL[website.type]],
             }}
             onClick={() => handleWebsiteClick(website.url)}

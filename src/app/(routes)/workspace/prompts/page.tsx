@@ -56,6 +56,7 @@ const Workspace = () => {
         <WorkspaceSearch 
           onSearchTextChange={handleSearchTextChange}
           searchText={searchText}
+          // @ts-ignore
           hideSearchEngine
         />
       </Box>

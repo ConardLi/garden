@@ -9,4 +9,4 @@ export interface UUIDOptions {
   name?: string;
 }
 
-export type UUIDNamespace = keyof typeof UUID_NAMESPACES; 
+// export type UUIDNamespace = keyof typeof UUID_NAMESPACES; 

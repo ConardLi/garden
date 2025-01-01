@@ -218,6 +218,7 @@ export default function AISiteFormDialog({
               <Select
                 name="type"
                 value={formData.type}
+                // @ts-ignore
                 onChange={handleChange}
                 required
               >

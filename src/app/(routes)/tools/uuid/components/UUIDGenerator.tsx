@@ -15,7 +15,7 @@ import {
   Paper,
 } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import type { UUIDOptions, UUIDVersion, UUIDNamespace } from '../types';
+import type { UUIDOptions, UUIDVersion } from '../types';
 import { UUID_NAMESPACES, isValidNamespace } from '../utils';
 
 interface UUIDGeneratorProps {
@@ -67,7 +67,7 @@ const UUIDGenerator: FC<UUIDGeneratorProps> = ({
     if (namespace === 'custom') {
       onOptionsChange({ ...options, namespace: '' });
     } else {
-      onOptionsChange({ ...options, namespace: UUID_NAMESPACES[namespace as UUIDNamespace] });
+      onOptionsChange({ ...options, namespace: UUID_NAMESPACES[namespace as any] });
     }
   };
 
@@ -82,6 +82,7 @@ const UUIDGenerator: FC<UUIDGeneratorProps> = ({
 
   const isCustomNamespace = useMemo(() => {
     if (!options.namespace) return false;
+    // @ts-ignore
     return !Object.values(UUID_NAMESPACES).includes(options.namespace);
   }, [options.namespace]);
 

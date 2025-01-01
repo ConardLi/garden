@@ -94,10 +94,11 @@ const DiffEditor: FC<DiffEditorProps> = ({
           renderSideBySide: true,
           minimap: { enabled: false },
           fontSize: 14,
-          tabSize: 2,
           scrollBeyondLastLine: false,
           automaticLayout: true,
-          bracketPairColorization: true,
+          bracketPairColorization:{
+            enabled: true
+          },
           diffWordWrap: 'on',
           readOnly: false,
           originalEditable: true,

@@ -113,7 +113,9 @@ const CodeEditor: FC<CodeEditorProps> = ({input,
             scrollBeyondLastLine: false,
             automaticLayout: true,
             formatOnPaste: true,
-            bracketPairColorization: true,
+            bracketPairColorization: {
+              enabled: true
+            },
             autoIndent: 'advanced',
             detectIndentation: true,
             insertSpaces: true,

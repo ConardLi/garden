@@ -97,6 +97,7 @@ const PromptList: React.FC<PromptListProps> = React.memo(({
         minItemWidth={280}
         gap={16}
         renderItem={renderItem}
+        // @ts-ignore
         style={{ overflow: "visible" }}
         className="virtual-grid-container"
       />

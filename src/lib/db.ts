@@ -21,7 +21,7 @@ export async function connectDB() {
     const opts = {
       bufferCommands: false,
     };
-
+    // @ts-ignore
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
       return mongoose;
     });

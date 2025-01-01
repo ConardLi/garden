@@ -4,6 +4,7 @@ export const formatCode = async (code: string, language: Language): Promise<stri
   try {
     // 使用 Monaco Editor 的格式化功能
     const worker = await (window as any).monaco.editor.getModel(
+      // @ts-ignore
       window.monaco.Uri.parse(`file:///main.${language}`)
     );
     

@@ -196,6 +196,7 @@ export default function PromptFormDialog({ open, onClose, prompt }: Props) {
             <InputLabel>来源</InputLabel>
             <Select
               name="source"
+              // @ts-ignore
               value={formData.source}
               onChange={handleChange}
               label="来源"

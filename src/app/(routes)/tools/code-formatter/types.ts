@@ -27,4 +27,5 @@ export type Language =
 export interface LanguageOption {
   value: Language;
   label: string;
+  parser?: string;
 } 

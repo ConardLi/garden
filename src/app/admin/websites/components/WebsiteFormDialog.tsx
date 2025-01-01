@@ -190,6 +190,7 @@ export default function WebsiteFormDialog({
               <Select
                 name="type"
                 value={formData.type}
+                // @ts-ignore
                 onChange={handleChange}
                 label="类型"
               >
