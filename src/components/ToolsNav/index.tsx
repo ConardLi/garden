@@ -26,7 +26,10 @@ const ToolsNav: FC<{ open?: boolean }> = ({ open = true }) => {
   };
 
   const toolsByTag = TAGS.reduce((acc, tag) => {
-    acc[tag] = TOOLS.filter((tool) => tool.tags.includes(tag));
+    const toolsForTag = TOOLS.filter((tool) => {
+      return tool.tags[0] === tag;
+    });
+    acc[tag] = toolsForTag;
     return acc;
   }, {} as Record<string, typeof TOOLS>);
 

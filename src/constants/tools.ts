@@ -73,7 +73,7 @@ export const TOOLS: Tool[] = [
     name: 'MD5生成',
     description: '快速生成文本的 MD5 哈希值',
     icon: 'Code',
-    tags: ['编码加密']
+    tags: ['编码加密','开发工具','文本工具']
   },
   {
     id: 'timestamp-converter',
@@ -95,7 +95,7 @@ export const TOOLS: Tool[] = [
     name: 'Base64 转换',
     description: '文本和图片的 Base64 编解码工具',
     icon: 'DataObject',
-    tags: ['编码加密']
+    tags: ['编码加密','开发工具','文本工具']
   },
   {
     id: 'regex-tester',
@@ -226,21 +226,21 @@ export const TOOLS: Tool[] = [
     name: 'UUID生成',
     description: '批量生成UUID',
     icon: 'Guid',
-    tags: ['开发工具']
+    tags: ['开发工具','文本工具']
   },
   {
     id: 'guid',
     name: 'GUID生成',
     description: '批量生成GUID',
     icon: 'Guid',
-    tags: ['开发工具']
+    tags: ['开发工具','文本工具']
   },
   {
       id:'aes',
       name: 'AES加解密',
       description: '在线 AES 加解密工具',
       icon: 'Lock',
-      tags: ['编码加密']
+      tags: ['编码加密','开发工具','文本工具']
   }
 ]; 
 
