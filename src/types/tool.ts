@@ -8,6 +8,7 @@ export type TagType =
   | '开发工具'
   | '设计工具'
   | '生活工具'
+  | '编码加密'
 ;
 
 export interface Tool {

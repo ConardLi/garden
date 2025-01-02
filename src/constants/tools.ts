@@ -10,9 +10,11 @@ import VideoFileIcon from '@mui/icons-material/VideoFile';
 import LanguageIcon from '@mui/icons-material/Language';
 import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import LockIcon from '@mui/icons-material/Lock';
 
 export const TAGS: TagType[] = [
   '开发工具',
+  '编码加密',
   '图片工具',
   '文本工具',
   '生活工具',
@@ -71,7 +73,7 @@ export const TOOLS: Tool[] = [
     name: 'MD5生成',
     description: '快速生成文本的 MD5 哈希值',
     icon: 'Code',
-    tags: ['开发工具']
+    tags: ['编码加密']
   },
   {
     id: 'timestamp-converter',
@@ -93,7 +95,7 @@ export const TOOLS: Tool[] = [
     name: 'Base64 转换',
     description: '文本和图片的 Base64 编解码工具',
     icon: 'DataObject',
-    tags: ['开发工具']
+    tags: ['编码加密']
   },
   {
     id: 'regex-tester',
@@ -232,6 +234,13 @@ export const TOOLS: Tool[] = [
     description: '批量生成GUID',
     icon: 'Guid',
     tags: ['开发工具']
+  },
+  {
+      id:'aes',
+      name: 'AES加解密',
+      description: '在线 AES 加解密工具',
+      icon: 'Lock',
+      tags: ['编码加密']
   }
 ]; 
 
@@ -247,4 +256,5 @@ export const TAG_TO_ICON: { [key: string]: IconType } = {
   '设计工具': ColorLensIcon,
   '视频工具': VideoFileIcon,
   '网络工具': LanguageIcon,
+  '编码加密': LockIcon,
 }; 
