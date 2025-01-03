@@ -13,7 +13,7 @@ const ToolsLayout = ({children}) => {
 
   // 在客户端动态更新标题
   useEffect(() => {
-    document.title = `${title} - code秘密花园`;
+    document.title = `${title} - 花园工具箱`;
   }, [title]);
 
   return (

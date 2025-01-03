@@ -1,5 +1,5 @@
 
-const BASE_TITLE = 'code秘密花园';
+const BASE_TITLE = '花园工具箱';
 
 export const useTitle = (title?: string) => {
   // console.log(111,title);
