@@ -39,7 +39,7 @@ const Logo: FC<LogoProps> = ({ title }) => {
         <Stack
           direction="row"
           alignItems="center"
-          spacing={1}
+          spacing={3}
           sx={{ 
             whiteSpace: "nowrap",
             position: "relative",
@@ -49,18 +49,17 @@ const Logo: FC<LogoProps> = ({ title }) => {
             component="svg"
             viewBox="0 0 400 80"
             sx={{
-              width: 260,
-              height: 52,
+              width: 280,
+              height: 56,
               display: "flex",
               alignItems: "center",
-              mr: -0.5,
             }}
           >
             <text
               x="0"
-              y="54"
+              y="56"
               style={{
-                fontSize: "52px",
+                fontSize: "40px",
                 fontWeight: 800,
                 animation: "stroke 3s infinite alternate",
                 letterSpacing: "2px",
@@ -93,39 +92,48 @@ const Logo: FC<LogoProps> = ({ title }) => {
             }
           `}</style>
 
-          <Box
-            component="span"
-            sx={{
-              width: 1,
-              height: 22,
-              background: "linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2), transparent)",
-              transform: "rotate(15deg)",
-              mx: 1,
-            }}
-          />
-
           <Typography
             sx={{
-              fontSize: "1.25rem",
+              fontSize: "1.15rem",
               fontWeight: 500,
-              color: "rgba(0, 0, 0, 0.75)",
+              color: "rgba(0, 0, 0, 0.65)",
               position: "relative",
-              ml: 0.5,
-              transition: "color 0.3s ease",
+              pl: 2.5,
+              letterSpacing: "0.5px",
+              transition: "all 0.3s ease",
+              marginLeft: "-100px !important",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                left: 0,
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: 2,
+                height: "45%",
+                background: "linear-gradient(180deg, #1976d2, rgba(25, 118, 210, 0.3))",
+                borderRadius: 4,
+                transition: "height 0.3s ease",
+              },
               "&::after": {
                 content: '""',
                 position: "absolute",
                 width: "0%",
-                height: "1px",
-                bottom: -1,
-                left: 0,
-                background: "rgba(0, 0, 0, 0.5)",
+                height: "2px",
+                bottom: -2,
+                left: "20%",
+                background: "linear-gradient(90deg, transparent, #1976d2, transparent)",
                 transition: "width 0.3s ease",
+                opacity: 0,
               },
               "&:hover": {
-                color: "rgba(0, 0, 0, 0.95)",
+                color: "#1976d2",
+                transform: "translateY(-1px)",
+                "&::before": {
+                  height: "80%",
+                },
                 "&::after": {
-                  width: "100%",
+                  width: "60%",
+                  opacity: 1,
                 },
               },
             }}
