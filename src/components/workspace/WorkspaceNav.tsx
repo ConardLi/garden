@@ -1,12 +1,15 @@
-import React from 'react';
+'use client';
+
 import { styled } from '@mui/material/styles';
-import { Box, List, ListItem, ListItemIcon, Tooltip, Avatar } from '@mui/material';
+import { Box, List } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import BuildIcon from '@mui/icons-material/Build';
 import LanguageIcon from '@mui/icons-material/Language';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { UserAvatar } from './components/UserAvatar';
+import { NavItem } from './components/NavItem';
 
 const NavContainer = styled(Box)(({ theme }) => ({
   width: '50px',
@@ -42,55 +45,6 @@ const NavList = styled(List)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(1),
   padding: 0,
-
-  '& .MuiListItem-root': {
-    width: '40px',
-    height: '48px',
-    borderRadius: theme.shape.borderRadius,
-    padding: 0,
-    color: 'white',
-    transition: 'all 0.2s ease',
-    cursor: 'pointer',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.15)',
-      transform: 'scale(1.1)',
-    },
-    
-    '&.active': {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    },
-  },
-  
-  '& .MuiListItemIcon-root': {
-    color: 'white',
-    minWidth: 'unset',
-    margin: 0,
-    justifyContent: 'center',
-  },
-
-  '& .MuiSvgIcon-root': {
-    fontSize: '1.2rem',
-  },
-
-  '& .nav-label': {
-    fontSize: '0.6rem',
-    marginTop: '2px',
-  },
-}));
-
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  '&:hover': {
-    transform: 'scale(1.1)',
-  },
 }));
 
 interface WorkspaceNavProps {
@@ -110,38 +64,32 @@ const WorkspaceNav: React.FC<WorkspaceNavProps> = ({ activeTab, onTabChange }) =
   return (
     <NavContainer>
       <TopSection>
-        <Tooltip title="登录" placement="right" arrow>
-          <StyledAvatar />
-        </Tooltip>
+        <UserAvatar />
       </TopSection>
 
       <MainSection>
         <NavList>
           {navItems.map((item) => (
-            <Tooltip title={item.label} placement="right" arrow key={item.id}>
-              <ListItem
-                className={activeTab === item.id ? 'active' : ''}
-                onClick={() => onTabChange(item.id)}
-              >
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <div className="nav-label">{item.label}</div>
-              </ListItem>
-            </Tooltip>
+            <NavItem
+              key={item.id}
+              id={item.id}
+              label={item.label}
+              icon={item.icon}
+              active={activeTab === item.id}
+              onClick={() => onTabChange(item.id)}
+            />
           ))}
         </NavList>
       </MainSection>
 
       <BottomSection>
         <NavList>
-          <Tooltip title="设置" placement="right" arrow>
-            <ListItem>
-              <ListItemIcon>
-                <SettingsIcon />
-              </ListItemIcon>
-            </ListItem>
-          </Tooltip>
+          <NavItem
+            id="settings"
+            label="设置"
+            icon={<SettingsIcon />}
+            onClick={() => {}}
+          />
         </NavList>
       </BottomSection>
     </NavContainer>

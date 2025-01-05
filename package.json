@@ -7,7 +7,8 @@
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:mock-login": "ts-node src/test/mock-wxapp-callback.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
