@@ -34,6 +34,8 @@ const menuItems = [
   { title: "网站管理", path: "/admin/websites", icon: <LanguageIcon /> },
   { title: "AI 工具", path: "/admin/aisites", icon: <SmartToyIcon /> },
   { title: "提示词管理", path: "/admin/prompts", icon: <CameraIcon /> },
+  { title: "用户管理", path: "/admin/users", icon: <LanguageIcon /> },
+  { title: "登录管理", path: "/admin/qrcode-sessions", icon: <LanguageIcon /> },
   { title: "系统设置", path: "/admin/settings", icon: <SettingsIcon /> },
 ];
 
