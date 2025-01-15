@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { QRCodeSessionModel } from '@/models/qrcode-session';
-import { connectDB } from '@/lib/db';
+import { connectDB } from '@/utils/server/db';
 
 // 二维码有效期（分钟）
 const EXPIRE_MINUTES = 5;

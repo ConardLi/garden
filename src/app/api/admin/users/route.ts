@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { UserModel } from '@/models/user';
-import { connectDB } from '@/lib/db';
+import { connectDB } from '@/utils/server/db';
 import { requireAuth } from '@/utils/hoc/auth';
 
 export const GET = requireAuth(

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { QRCodeSessionModel } from '@/models/qrcode-session';
 import { sign } from 'jsonwebtoken';
-import { connectDB } from '@/lib/db';
+import { connectDB } from '@/utils/server/db';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 

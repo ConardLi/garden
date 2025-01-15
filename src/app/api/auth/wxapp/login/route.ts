@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { QRCodeSessionModel } from '@/models/qrcode-session';
 import { UserModel } from '@/models/user';
-import { connectDB } from '@/lib/db';
+import { connectDB } from '@/utils/server/db';
 
 interface WxLoginBody {
   qrcodeId: string;

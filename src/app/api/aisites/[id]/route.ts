@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import AISite from '@/models/aisite';
-import { connectDB } from '@/lib/db';
+import { connectDB } from '@/utils/server/db';
 import { requireAuth } from '@/utils/hoc/auth';
 
 export async function GET(
