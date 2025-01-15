@@ -8,3 +8,4 @@ secret.json
 .DS_Store
 tsconfig.tsbuildinfo
 mock-login-callback.ts
+.env.local
