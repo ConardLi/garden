@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadFile } from '@/utils/server/cos';
+import { verifySign } from '@/utils/hoc/verify-sign';
 
-export async function POST(request: NextRequest) {
+async function post(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -39,3 +40,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const POST = verifySign(post);

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/utils/server/auth-decorator';
+import { requireAuth } from '@/utils/hoc/auth';
 
 // 基本的登录验证
 export const GET = requireAuth(async (request: NextRequest) => {

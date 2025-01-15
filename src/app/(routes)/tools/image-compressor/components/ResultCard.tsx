@@ -1,13 +1,13 @@
-import { FC } from 'react';
-import { Box, Typography } from '@mui/material';
-import { CompressionResult } from '../utils';
+import { FC } from "react";
+import { Box, Typography } from "@mui/material";
+import { CompressionResult } from "../utils";
 
 interface ResultCardProps {
   result: CompressionResult;
 }
 
 const ResultCard: FC<ResultCardProps> = ({ result }) => (
-  <Box sx={{ textAlign: 'center' }}>
+  <Box sx={{ textAlign: "center" }}>
     <Typography variant="h6" gutterBottom>
       压缩完成！
     </Typography>
@@ -23,4 +23,4 @@ const ResultCard: FC<ResultCardProps> = ({ result }) => (
   </Box>
 );
 
-export default ResultCard; 
+export default ResultCard;

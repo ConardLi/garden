@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { Save as SaveIcon, CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { AI_TAGS } from '@/constants/ai';
+import { post } from '@/utils/fe/request';
 
 interface AISite {
   _id: string;
@@ -122,17 +123,7 @@ export default function AISiteFormDialog({
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || '上传失败');
-      }
-
-      const { url } = await response.json();
+      const { url } = await post('/api/upload', formData);
       setFormData(prev => ({ ...prev, icon: url }));
     } catch (error) {
       setError(error instanceof Error ? error.message : '上传失败');

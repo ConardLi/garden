@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Prompt from '@/models/prompt';
 import { connectDB } from '@/lib/db';
-import { requireAuth } from '@/utils/server/auth-decorator';
+import { requireAuth } from '@/utils/hoc/auth';
 
 export async function GET(
   request: NextRequest,

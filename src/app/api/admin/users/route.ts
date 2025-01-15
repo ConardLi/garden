@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { UserModel } from '@/models/user';
 import { connectDB } from '@/lib/db';
-import { requireAuth } from '@/utils/server/auth-decorator';
+import { requireAuth } from '@/utils/hoc/auth';
 
 export const GET = requireAuth(
   {
