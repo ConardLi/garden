@@ -14,6 +14,7 @@ import {
   Chip,
   SelectChangeEvent,
 } from '@mui/material';
+import { post, put } from '@/utils/fe/request';
 
 interface Prompt {
   _id: string;
@@ -103,23 +104,12 @@ export default function PromptFormDialog({ open, onClose, prompt }: Props) {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const url = prompt ? `/api/prompts/${prompt._id}` : '/api/prompts';
-      const method = prompt ? 'PUT' : 'POST';
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        onClose(true);
+      if (prompt) {
+        await put(`/api/prompts/${prompt._id}`, formData);
       } else {
-        const data = await response.json();
-        console.error('Failed to save prompt:', data.message);
+        await post('/api/prompts', formData);
       }
+      onClose(true);
     } catch (error) {
       console.error('Error saving prompt:', error);
     } finally {

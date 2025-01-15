@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Prompt from '@/models/prompt';
 import { connectDB } from '@/lib/db';
+import { requireAuth } from '@/utils/server/auth-decorator';
 
 const MAX_LIMIT = 50;
 
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+async function post(request: NextRequest) {
   try {
     await connectDB();
     
@@ -106,3 +107,11 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const POST = requireAuth(
+  {
+    allowedRoles: ['admin'],
+    errorMessage: '需要管理员权限'
+  },
+  post
+);

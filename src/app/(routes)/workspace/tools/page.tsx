@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 import WorkspaceTools from "./main";
 import WorkspaceSearch from "../components/WorkspaceSearch";
-import { getStoredSearchEngine } from "@/utils/storage";
+import { getStoredSearchEngine } from "@/utils/fe/storage";
 import useDebounce from "@/hooks/useDebounce";
 
 type QueryParams = Record<"tag" | "toolTag", string>;

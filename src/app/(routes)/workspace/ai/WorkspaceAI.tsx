@@ -10,7 +10,7 @@ import { AI_TAGS, TAG_TO_ICON } from "@/constants/ai";
 import {
   getFavoriteAIWebsites,
   toggleFavoriteAIWebsite,
-} from "@/utils/storage";
+} from "@/utils/fe/storage";
 import { AITagType } from "@/types/ai";
 
 const ContentSection = styled(Box)(({ theme }) => ({

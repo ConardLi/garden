@@ -28,6 +28,7 @@ import {
 } from "@mui/icons-material";
 import { StyledContainer, GlassCard } from "../websites/styles";
 import PromptFormDialog from "./components/PromptFormDialog";
+import { get, post, put, del } from '@/utils/fe/request';
 
 interface Prompt {
   _id: string;
@@ -75,28 +76,19 @@ export default function PromptsPage() {
   const fetchPrompts = useCallback(async () => {
     try {
       setLoading(true);
-      const queryParams = new URLSearchParams({
-        page: paginationInfo.page.toString(),
-        limit: paginationInfo.pageSize.toString(),
+      const data = await get('/api/prompts', {
+        page: paginationInfo.page,
+        limit: paginationInfo.pageSize,
         ...filterParams,
       });
 
-      console.log("Fetching prompts with params:", queryParams.toString());
-      const response = await fetch(`/api/prompts?${queryParams}`);
-      const data = await response.json();
-      console.log("Response data:", data);
-
-      if (response.ok) {
-        setPrompts(data.prompts);
-        setPaginationInfo({
-          total: data.pagination.total,
-          page: data.pagination.page,
-          pageSize: data.pagination.limit,
-          pages: data.pagination.pages,
-        });
-      } else {
-        console.error("Failed to fetch prompts:", data.message);
-      }
+      setPrompts(data.prompts);
+      setPaginationInfo({
+        total: data.pagination.total,
+        page: data.pagination.page,
+        pageSize: data.pagination.limit,
+        pages: data.pagination.pages,
+      });
     } catch (error) {
       console.error("Error fetching prompts:", error);
     } finally {
@@ -122,16 +114,8 @@ export default function PromptsPage() {
     if (!window.confirm("确定要删除这个提示词吗？")) return;
 
     try {
-      const response = await fetch(`/api/prompts/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        fetchPrompts();
-      } else {
-        const data = await response.json();
-        console.error("Failed to delete prompt:", data.message);
-      }
+      await del(`/api/prompts/${id}`);
+      fetchPrompts();
     } catch (error) {
       console.error("Error deleting prompt:", error);
     }

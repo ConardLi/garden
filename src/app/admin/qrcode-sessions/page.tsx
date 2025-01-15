@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -11,11 +11,10 @@ import {
   FormControl,
   InputLabel,
   Pagination,
-} from '@mui/material';
-import {
-  Search as SearchIcon,
-} from '@mui/icons-material';
-import styled from '@emotion/styled';
+} from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import styled from "@emotion/styled";
+import { get } from "@/utils/fe/request";
 
 const StyledContainer = styled(Box)`
   padding: 24px;
@@ -35,7 +34,7 @@ interface QRCodeSession {
   qrcodeId: string;
   createdAt: Date;
   expireTime: Date;
-  status: 'pending' | 'success' | 'expired';
+  status: "pending" | "success" | "expired";
   userId?: string;
   userInfo?: {
     nickname: string;
@@ -58,8 +57,8 @@ interface FilterParams {
 export default function QRCodeSessionsPage() {
   const [sessions, setSessions] = useState<QRCodeSession[]>([]);
   const [filters, setFilters] = useState<FilterParams>({
-    search: '',
-    status: '',
+    search: "",
+    status: "",
   });
   const [pagination, setPagination] = useState<PaginationInfo>({
     total: 0,
@@ -72,27 +71,21 @@ export default function QRCodeSessionsPage() {
   const fetchSessions = useCallback(async () => {
     try {
       setLoading(true);
-      const queryParams = new URLSearchParams();
-      if (filters.search) {
-        queryParams.append('search', filters.search);
-      }
-      if (filters.status) {
-        queryParams.append('status', filters.status);
-      }
-      queryParams.append('page', pagination.page.toString());
-      queryParams.append('pageSize', pagination.pageSize.toString());
-
-      const response = await fetch(`/api/admin/qrcode-sessions?${queryParams}`);
-      const data = await response.json();
+      const data = await get("/api/admin/qrcode-sessions", {
+        search: filters.search,
+        status: filters.status,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      });
 
       setSessions(data.items);
-      setPagination(prev => ({
+      setPagination((prev) => ({
         ...prev,
         total: data.total,
         pages: Math.ceil(data.total / prev.pageSize),
       }));
     } catch (error) {
-      console.error('Failed to fetch QR code sessions:', error);
+      console.error("Failed to fetch QR code sessions:", error);
     } finally {
       setLoading(false);
     }
@@ -103,12 +96,12 @@ export default function QRCodeSessionsPage() {
   }, [fetchSessions]);
 
   const handlePageChange = (_: any, newPage: number) => {
-    setPagination(prev => ({ ...prev, page: newPage }));
+    setPagination((prev) => ({ ...prev, page: newPage }));
   };
 
   const handleFilterChange = (key: keyof FilterParams) => (event: any) => {
-    setFilters(prev => ({ ...prev, [key]: event.target.value }));
-    setPagination(prev => ({ ...prev, page: 1 }));
+    setFilters((prev) => ({ ...prev, [key]: event.target.value }));
+    setPagination((prev) => ({ ...prev, page: 1 }));
   };
 
   return (
@@ -123,7 +116,7 @@ export default function QRCodeSessionsPage() {
             label="Search"
             variant="outlined"
             value={filters.search}
-            onChange={handleFilterChange('search')}
+            onChange={handleFilterChange("search")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -136,7 +129,7 @@ export default function QRCodeSessionsPage() {
             <InputLabel>Status</InputLabel>
             <Select
               value={filters.status}
-              onChange={handleFilterChange('status')}
+              onChange={handleFilterChange("status")}
               label="Status"
             >
               <MenuItem value="">All</MenuItem>
@@ -148,29 +141,35 @@ export default function QRCodeSessionsPage() {
         </Box>
 
         <Box overflow="auto">
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={{ textAlign: 'left', padding: '12px' }}>QR Code ID</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Status</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Created At</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Expire Time</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>User</th>
+                <th style={{ textAlign: "left", padding: "12px" }}>
+                  QR Code ID
+                </th>
+                <th style={{ textAlign: "left", padding: "12px" }}>Status</th>
+                <th style={{ textAlign: "left", padding: "12px" }}>
+                  Created At
+                </th>
+                <th style={{ textAlign: "left", padding: "12px" }}>
+                  Expire Time
+                </th>
+                <th style={{ textAlign: "left", padding: "12px" }}>User</th>
               </tr>
             </thead>
             <tbody>
               {sessions.map((session) => (
                 <tr key={session._id}>
-                  <td style={{ padding: '12px' }}>{session.qrcodeId}</td>
-                  <td style={{ padding: '12px' }}>{session.status}</td>
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ padding: "12px" }}>{session.qrcodeId}</td>
+                  <td style={{ padding: "12px" }}>{session.status}</td>
+                  <td style={{ padding: "12px" }}>
                     {new Date(session.createdAt).toLocaleString()}
                   </td>
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ padding: "12px" }}>
                     {new Date(session.expireTime).toLocaleString()}
                   </td>
-                  <td style={{ padding: '12px' }}>
-                    {session.userInfo ? session.userInfo.nickname : '-'}
+                  <td style={{ padding: "12px" }}>
+                    {session.userInfo ? session.userInfo.nickname : "-"}
                   </td>
                 </tr>
               ))}

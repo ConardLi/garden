@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { loginSessions } from '@/utils/wechat';
+import { loginSessions } from '@/utils/server/wechat';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

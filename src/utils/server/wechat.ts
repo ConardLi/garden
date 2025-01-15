@@ -5,7 +5,7 @@ import crypto from 'crypto';
 // 读取配置文件
 const secret = JSON.parse(
   readFileSync(join(process.cwd(), 'src/config/secret.json'), 'utf-8')
-);
+).jwtSecret;
 
 interface AccessTokenResponse {
   access_token: string;

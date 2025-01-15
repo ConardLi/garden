@@ -2,8 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { QRCodeSessionModel } from '@/models/qrcode-session';
 import { sign } from 'jsonwebtoken';
 import { connectDB } from '@/lib/db';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = JSON.parse(
+  readFileSync(join(process.cwd(), 'src/config/secret.json'), 'utf-8')
+).jwtSecret;
 
 export async function GET(req: NextRequest) {
   try {

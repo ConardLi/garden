@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Website from '@/models/website';
 import { connectDB } from '@/lib/db';
+import { requireAuth } from '@/utils/server/auth-decorator';
 
 export async function GET(
   request: NextRequest,
@@ -27,7 +28,7 @@ export async function GET(
   }
 }
 
-export async function PUT(
+async function put(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -58,7 +59,7 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
+async function del(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
@@ -82,3 +83,20 @@ export async function DELETE(
     );
   }
 }
+
+export const PUT = requireAuth(
+  {
+    allowedRoles: ['admin'],
+    errorMessage: '需要管理员权限'
+  },
+  put
+);
+
+
+export const DELETE = requireAuth(
+  {
+    allowedRoles: ['admin'],
+    errorMessage: '需要管理员权限'
+  },
+  del
+);

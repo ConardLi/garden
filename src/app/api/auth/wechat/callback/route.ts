@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifySignature, loginSessions } from '@/utils/wechat';
+import { verifySignature, loginSessions } from '@/utils/server/wechat';
 import { XMLParser } from 'fast-xml-parser';
 
 export async function GET(request: Request) {

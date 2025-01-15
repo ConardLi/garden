@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import { StyledContainer, GlassCard } from '../websites/styles';
 import AISiteFormDialog from './components/AISiteFormDialog';
+import { get, post, put, del } from '@/utils/fe/request';
 
 interface AISite {
   _id: string;
@@ -86,20 +87,12 @@ export default function AISitesPage() {
   const fetchAISites = useCallback(async () => {
     try {
       setLoading(true);
-      // 构建查询参数
-      const queryParams = new URLSearchParams();
-      if (filters.search) {
-        queryParams.append('search', filters.search);
-      }
-      if (filters.type) {
-        queryParams.append('type', filters.type);
-      }
-      queryParams.append('page', pagination.page.toString());
-      queryParams.append('limit', pagination.pageSize.toString());
-
-      const response = await fetch(`/api/aisites?${queryParams.toString()}`);
-      if (!response.ok) throw new Error('获取 AI 工具列表失败');
-      const data = await response.json();
+      const data = await get('/api/aisites', {
+        search: filters.search,
+        type: filters.type,
+        page: pagination.page,
+        limit: pagination.pageSize,
+      });
       
       setAISites(data.aisites);
       setPagination(prev => ({
@@ -147,22 +140,12 @@ export default function AISitesPage() {
   };
 
   const handleFormSubmit = async (formData: Omit<AISite, '_id'>) => {
-    const url = isNewAISite ? '/api/aisites' : `/api/aisites/${selectedAISite?._id}`;
-    const method = isNewAISite ? 'POST' : 'PUT';
-
     try {
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('操作失败');
+      if (isNewAISite) {
+        await post('/api/aisites', formData);
+      } else {
+        await put(`/api/aisites/${selectedAISite?._id}`, formData);
       }
-
       setFormDialogOpen(false);
       fetchAISites();
     } catch (error) {
@@ -175,14 +158,7 @@ export default function AISitesPage() {
     if (!selectedAISite) return;
 
     try {
-      const response = await fetch(`/api/aisites/${selectedAISite._id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('删除失败');
-      }
-
+      await del(`/api/aisites/${selectedAISite._id}`);
       setDeleteDialogOpen(false);
       fetchAISites();
     } catch (error) {

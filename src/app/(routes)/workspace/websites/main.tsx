@@ -6,7 +6,7 @@ import { Box, Typography, Pagination } from "@mui/material";
 import AICard from "@/components/workspace/AICard";
 import TagFilter from "@/components/workspace/TagFilter";
 import VirtualGrid from "@/components/workspace/VirtualGrid";
-import { getFavoriteWebsites, toggleFavoriteWebsite } from "@/utils/storage";
+import { getFavoriteWebsites, toggleFavoriteWebsite } from "@/utils/fe/storage";
 import {
   WEBSITE_TYPES,
   TYPE_TO_ICON,

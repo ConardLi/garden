@@ -1,16 +1,16 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Box, Grid, Pagination, Stack } from '@mui/material';
-import ItemCard from '@/components/workspace/ItemCard';
-import TagFilter from '@/components/workspace/TagFilter';
-import { TOOLS, TAGS, TAG_TO_ICON } from '@/constants/tools';
-import { getFavoriteTools, toggleFavoriteTool } from '@/utils/storage';
-import { TagType } from '@/types/tool';
-import { useQueryParams } from '@/hooks/useQueryParams';
+import React from "react";
+import { styled } from "@mui/material/styles";
+import { Box, Grid, Pagination, Stack } from "@mui/material";
+import ItemCard from "@/components/workspace/ItemCard";
+import TagFilter from "@/components/workspace/TagFilter";
+import { TOOLS, TAGS, TAG_TO_ICON } from "@/constants/tools";
+import { getFavoriteTools, toggleFavoriteTool } from "@/utils/fe/storage";
+import { TagType } from "@/types/tool";
+import { useQueryParams } from "@/hooks/useQueryParams";
 
 const ContentSection = styled(Box)(({ theme }) => ({
-  width: '100%',
-  maxWidth: '1600px',
+  width: "100%",
+  maxWidth: "1600px",
   padding: theme.spacing(0, 2),
 }));
 
@@ -23,14 +23,17 @@ interface WorkspaceToolsProps {
 const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
   selectedTag: propSelectedTag,
   onTagChange,
-  searchText = '',
+  searchText = "",
 }) => {
-  const { params, updateParams } = useQueryParams<{ toolTag: string; page: string }>({
-    toolTag: '',
-    page: '1',
+  const { params, updateParams } = useQueryParams<{
+    toolTag: string;
+    page: string;
+  }>({
+    toolTag: "",
+    page: "1",
   });
 
-  const selectedTag = propSelectedTag || params.toolTag || '';
+  const selectedTag = propSelectedTag || params.toolTag || "";
   const currentPage = parseInt(params.page) || 1;
   const itemsPerPage = 24;
 
@@ -41,16 +44,16 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
   }, []);
 
   const handleTagChange = (newTags: TagType[]) => {
-    const newTag = newTags.length > 0 ? newTags[0] : '';
+    const newTag = newTags.length > 0 ? newTags[0] : "";
     if (onTagChange) {
       onTagChange(newTag);
     } else {
-      updateParams({ toolTag: newTag, page: '1' });
+      updateParams({ toolTag: newTag, page: "1" });
     }
   };
 
   const handleToolClick = (toolId: string) => {
-    window.open(`/tools/${toolId}`, '_blank');
+    window.open(`/tools/${toolId}`, "_blank");
   };
 
   const handleFavoriteToggle = (toolId: string) => {
@@ -58,20 +61,24 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
     setFavoriteTools(newFavorites);
   };
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     updateParams({ ...params, page: value.toString() });
   };
 
   const filteredTools = React.useMemo(() => {
-    let tools = !selectedTag ? TOOLS : TOOLS.filter(tool => 
-      tool.tags.includes(selectedTag as TagType)
-    );
+    let tools = !selectedTag
+      ? TOOLS
+      : TOOLS.filter((tool) => tool.tags.includes(selectedTag as TagType));
 
     if (searchText) {
       const lowerSearchText = searchText.toLowerCase();
-      tools = tools.filter(tool =>
-        tool.name.toLowerCase().includes(lowerSearchText) ||
-        tool.description.toLowerCase().includes(lowerSearchText)
+      tools = tools.filter(
+        (tool) =>
+          tool.name.toLowerCase().includes(lowerSearchText) ||
+          tool.description.toLowerCase().includes(lowerSearchText)
       );
     }
 
@@ -89,21 +96,23 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
   // 当筛选条件改变时，重置页码
   React.useEffect(() => {
     if (searchText || selectedTag) {
-      updateParams({ ...params, page: '1' });
+      updateParams({ ...params, page: "1" });
     }
   }, [selectedTag, searchText]);
 
   return (
     <ContentSection>
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        width: '100%', 
-        mb: 4,
-        px: { xs: 2, sm: 4, md: 6 }, 
-        maxWidth: '100%',
-        overflow: 'auto',
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+          mb: 4,
+          px: { xs: 2, sm: 4, md: 6 },
+          maxWidth: "100%",
+          overflow: "auto",
+        }}
+      >
         <TagFilter<TagType>
           tags={TAGS}
           selectedTags={selectedTag ? [selectedTag as TagType] : []}
@@ -129,8 +138,11 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
         ))}
       </Grid>
       {totalPages > 1 && (
-        <Stack spacing={2} sx={{ mt: 4, display: 'flex', alignItems: 'center' }}>
-          <Pagination 
+        <Stack
+          spacing={2}
+          sx={{ mt: 4, display: "flex", alignItems: "center" }}
+        >
+          <Pagination
             count={totalPages}
             page={currentPage}
             onChange={handlePageChange}
@@ -138,14 +150,14 @@ const WorkspaceTools: React.FC<WorkspaceToolsProps> = ({
             shape="rounded"
             size="large"
             sx={{
-              '& .MuiPaginationItem-root': {
-                color: 'rgba(255, 255, 255, 0.7)',
-                borderColor: 'rgba(255, 255, 255, 0.3)',
-                '&.Mui-selected': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              "& .MuiPaginationItem-root": {
+                color: "rgba(255, 255, 255, 0.7)",
+                borderColor: "rgba(255, 255, 255, 0.3)",
+                "&.Mui-selected": {
+                  backgroundColor: "rgba(255, 255, 255, 0.2)",
                 },
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
                 },
               },
             }}

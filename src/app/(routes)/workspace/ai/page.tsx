@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense } from "react";
 import { useQueryParams } from "@/hooks/useQueryParams";
-import { styled } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
-import WorkspaceAI from './WorkspaceAI';
-import WorkspaceSearch from '../components/WorkspaceSearch';
-import { getStoredSearchEngine } from '@/utils/storage';
-import useDebounce from '@/hooks/useDebounce';
+import { styled } from "@mui/material/styles";
+import { Box, Typography } from "@mui/material";
+import WorkspaceAI from "./WorkspaceAI";
+import WorkspaceSearch from "../components/WorkspaceSearch";
+import { getStoredSearchEngine } from "@/utils/fe/storage";
+import useDebounce from "@/hooks/useDebounce";
 
 type QueryParams = Record<"tag" | "toolTag", string>;
-
 
 interface WorkspaceContentProps {
   activeTag?: string;
@@ -21,26 +20,26 @@ interface WorkspaceContentProps {
 
 const Container = styled(Box)(({ theme }) => ({
   flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   padding: theme.spacing(4, 2),
-  overflowY: 'auto',
-  height: '100vh',
+  overflowY: "auto",
+  height: "100vh",
 }));
 
 const ModuleTitle = styled(Typography)(({ theme }) => ({
-  fontSize: '3rem',
-  background: 'linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
+  fontSize: "3rem",
+  background: "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
   fontWeight: 700,
-  textAlign: 'center',
+  textAlign: "center",
   marginBottom: theme.spacing(4),
-  transition: 'all 0.3s ease-in-out',
-  letterSpacing: '0.5px',
-  '&:hover': {
-    transform: 'scale(1.02)',
+  transition: "all 0.3s ease-in-out",
+  letterSpacing: "0.5px",
+  "&:hover": {
+    transform: "scale(1.02)",
   },
 }));
 
@@ -50,8 +49,10 @@ const WorkspaceContent: React.FC<WorkspaceContentProps> = ({
   selectedToolTags,
   onToolTagsChange,
 }) => {
-  const [searchEngine, setSearchEngine] = useState(() => getStoredSearchEngine() || 'google');
-  const [searchText, setSearchText] = useState('');
+  const [searchEngine, setSearchEngine] = useState(
+    () => getStoredSearchEngine() || "google"
+  );
+  const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 300);
 
   const handleSearchEngineChange = (engine: string) => {
@@ -63,46 +64,41 @@ const WorkspaceContent: React.FC<WorkspaceContentProps> = ({
   };
 
   const renderTitle = () => {
-    return (
-      <ModuleTitle>
-        AI 工具集
-      </ModuleTitle>
-    );
+    return <ModuleTitle>AI 工具集</ModuleTitle>;
   };
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Container>
         {renderTitle()}
-        <Box sx={{ width: '100%', maxWidth: '600px', mb: 4 }}>
-          <WorkspaceSearch 
-            onSearchEngineChange={handleSearchEngineChange} 
+        <Box sx={{ width: "100%", maxWidth: "600px", mb: 4 }}>
+          <WorkspaceSearch
+            onSearchEngineChange={handleSearchEngineChange}
             onSearchTextChange={handleSearchTextChange}
             searchText={searchText}
           />
         </Box>
-        
+
         <Box
           sx={{
-            width: '100%',
-            maxWidth: '1600px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            width: "100%",
+            maxWidth: "1600px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             gap: 4,
           }}
         >
-          <WorkspaceAI 
-              activeTag={activeTag} 
-              onTagChange={onTagChange} 
-              searchText={debouncedSearchText}
-            />
+          <WorkspaceAI
+            activeTag={activeTag}
+            onTagChange={onTagChange}
+            searchText={debouncedSearchText}
+          />
         </Box>
       </Container>
     </Suspense>
   );
 };
-
 
 const Workspace: React.FC = () => {
   const { params, updateParams } = useQueryParams<QueryParams>({

@@ -25,7 +25,10 @@ import {
   getSearchUrl,
   getSearchEngineName,
 } from "@/constants/searchEngines";
-import { getStoredSearchEngine, setStoredSearchEngine } from "@/utils/storage";
+import {
+  getStoredSearchEngine,
+  setStoredSearchEngine,
+} from "@/utils/fe/storage";
 
 const SearchBar = styled(TextField)(({ theme }) => ({
   width: "100%",

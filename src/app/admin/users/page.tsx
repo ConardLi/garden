@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -8,11 +8,10 @@ import {
   InputAdornment,
   Pagination,
   Avatar,
-} from '@mui/material';
-import {
-  Search as SearchIcon,
-} from '@mui/icons-material';
-import styled from '@emotion/styled';
+} from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import styled from "@emotion/styled";
+import { get } from "@/utils/fe/request";
 
 const StyledContainer = styled(Box)`
   padding: 24px;
@@ -50,7 +49,7 @@ interface FilterParams {
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [filters, setFilters] = useState<FilterParams>({
-    search: '',
+    search: "",
   });
   const [pagination, setPagination] = useState<PaginationInfo>({
     total: 0,
@@ -63,24 +62,20 @@ export default function UsersPage() {
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const queryParams = new URLSearchParams();
-      if (filters.search) {
-        queryParams.append('search', filters.search);
-      }
-      queryParams.append('page', pagination.page.toString());
-      queryParams.append('pageSize', pagination.pageSize.toString());
-
-      const response = await fetch(`/api/admin/users?${queryParams}`);
-      const data = await response.json();
+      const data = await get("/api/admin/users", {
+        search: filters.search,
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+      });
 
       setUsers(data.items);
-      setPagination(prev => ({
+      setPagination((prev) => ({
         ...prev,
         total: data.total,
         pages: Math.ceil(data.total / prev.pageSize),
       }));
     } catch (error) {
-      console.error('Failed to fetch users:', error);
+      console.error("Failed to fetch users:", error);
     } finally {
       setLoading(false);
     }
@@ -91,12 +86,12 @@ export default function UsersPage() {
   }, [fetchUsers]);
 
   const handlePageChange = (_: any, newPage: number) => {
-    setPagination(prev => ({ ...prev, page: newPage }));
+    setPagination((prev) => ({ ...prev, page: newPage }));
   };
 
   const handleFilterChange = (key: keyof FilterParams) => (event: any) => {
-    setFilters(prev => ({ ...prev, [key]: event.target.value }));
-    setPagination(prev => ({ ...prev, page: 1 }));
+    setFilters((prev) => ({ ...prev, [key]: event.target.value }));
+    setPagination((prev) => ({ ...prev, page: 1 }));
   };
 
   return (
@@ -111,7 +106,7 @@ export default function UsersPage() {
             label="Search by nickname"
             variant="outlined"
             value={filters.search}
-            onChange={handleFilterChange('search')}
+            onChange={handleFilterChange("search")}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -123,28 +118,32 @@ export default function UsersPage() {
         </Box>
 
         <Box overflow="auto">
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Avatar</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Nickname</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Open ID</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Created At</th>
-                <th style={{ textAlign: 'left', padding: '12px' }}>Updated At</th>
+                <th style={{ textAlign: "left", padding: "12px" }}>Avatar</th>
+                <th style={{ textAlign: "left", padding: "12px" }}>Nickname</th>
+                <th style={{ textAlign: "left", padding: "12px" }}>Open ID</th>
+                <th style={{ textAlign: "left", padding: "12px" }}>
+                  Created At
+                </th>
+                <th style={{ textAlign: "left", padding: "12px" }}>
+                  Updated At
+                </th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user._id}>
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ padding: "12px" }}>
                     <Avatar src={user.avatarUrl} alt={user.nickname} />
                   </td>
-                  <td style={{ padding: '12px' }}>{user.nickname}</td>
-                  <td style={{ padding: '12px' }}>{user.openId}</td>
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ padding: "12px" }}>{user.nickname}</td>
+                  <td style={{ padding: "12px" }}>{user.openId}</td>
+                  <td style={{ padding: "12px" }}>
                     {new Date(user.createdAt).toLocaleString()}
                   </td>
-                  <td style={{ padding: '12px' }}>
+                  <td style={{ padding: "12px" }}>
                     {new Date(user.updatedAt).toLocaleString()}
                   </td>
                 </tr>

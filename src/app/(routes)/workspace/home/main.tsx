@@ -15,7 +15,7 @@ import {
   toggleFavoriteWebsite,
   toggleFavoriteAIWebsite,
   toggleFavoriteTool,
-} from "@/utils/storage";
+} from "@/utils/fe/storage";
 
 const ContentSection = styled(Box)(({ theme }) => ({
   width: "100%",

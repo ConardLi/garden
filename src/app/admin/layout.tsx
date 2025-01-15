@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -18,14 +18,17 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
+  ChevronLeft as ChevronLeftIcon,
+  Group as GroupIcon,
+  QrCode as QrCodeIcon,
+  Camera as CameraIcon,
   Language as LanguageIcon,
   Settings as SettingsIcon,
   Dashboard as DashboardIcon,
-  ChevronLeft as ChevronLeftIcon,
   SmartToy as SmartToyIcon,
-  Camera as CameraIcon,
 } from "@mui/icons-material";
 import { useRouter, usePathname } from "next/navigation";
+import { get } from "@/utils/fe/request";
 
 const drawerWidth = 240;
 
@@ -34,8 +37,8 @@ const menuItems = [
   { title: "网站管理", path: "/admin/websites", icon: <LanguageIcon /> },
   { title: "AI 工具", path: "/admin/aisites", icon: <SmartToyIcon /> },
   { title: "提示词管理", path: "/admin/prompts", icon: <CameraIcon /> },
-  { title: "用户管理", path: "/admin/users", icon: <LanguageIcon /> },
-  { title: "登录管理", path: "/admin/qrcode-sessions", icon: <LanguageIcon /> },
+  { title: "用户管理", path: "/admin/users", icon: <GroupIcon /> },
+  { title: "登录管理", path: "/admin/qrcode-sessions", icon: <QrCodeIcon /> },
   { title: "系统设置", path: "/admin/settings", icon: <SettingsIcon /> },
 ];
 
@@ -48,6 +51,59 @@ export default function AdminLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState(true);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    // 调用管理员接口检查权限
+    const checkPermission = async () => {
+      try {
+        // 调用任意一个管理员接口检查权限
+        await get("/api/admin/qrcode-sessions", { page: 1, pageSize: 1 });
+        setHasPermission(true);
+      } catch (err: any) {
+        const error = String(err);
+        // 如果返回 401 或 403，都表示无权限
+        if (
+          error?.includes("401") ||
+          error?.includes("403") ||
+          error?.includes("无权限") ||
+          error?.includes("未登录")
+        ) {
+          setHasPermission(false);
+        }
+      }
+    };
+
+    checkPermission();
+  }, []);
+
+  // 加载中
+  if (hasPermission === null) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        Loading...
+      </Box>
+    );
+  }
+
+  // 无权限
+  if (hasPermission === false) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100vh"
+      >
+        您没有管理员权限
+      </Box>
+    );
+  }
 
   const handleDrawerToggle = () => {
     setOpen(!open);

@@ -8,7 +8,7 @@ import { TOOLS, TAGS, TAG_TO_ICON } from "../../constants/tools";
 import { DRAWER_WIDTH } from "./styles";
 import NavItem from "./components/NavItem";
 import NavGroup from "./components/NavGroup";
-import { getToolPath, getHomePath } from "../../utils/navigation";
+import { getToolPath, getHomePath } from "../../utils/fe/navigation";
 
 const ToolsNav: FC<{ open?: boolean }> = ({ open = true }) => {
   const pathname = usePathname();

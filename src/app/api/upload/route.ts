@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadFile } from '@/utils/cos';
+import { uploadFile } from '@/utils/server/cos';
 
 export async function POST(request: NextRequest) {
   try {

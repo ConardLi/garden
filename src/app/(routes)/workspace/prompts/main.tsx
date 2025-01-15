@@ -4,7 +4,7 @@ import React from "react";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
 import { PROMPT_TAGS } from "@/constants/prompts";
-import { getFavoritePrompts, toggleFavoritePrompt } from "@/utils/storage";
+import { getFavoritePrompts, toggleFavoritePrompt } from "@/utils/fe/storage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Prompt } from "./types";
 import PromptList from "./components/PromptList";

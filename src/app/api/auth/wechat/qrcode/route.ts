@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createTempQRCode, loginSessions } from '@/utils/wechat';
+import { createTempQRCode, loginSessions } from '@/utils/server/wechat';
 import { v4 as uuidv4 } from 'uuid';
 
 export async function GET() {

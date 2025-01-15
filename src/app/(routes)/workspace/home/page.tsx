@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from "react";
 import { useQueryParams } from "@/hooks/useQueryParams";
-import { styled } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
-import WorkspaceHome from './main';
-import WorkspaceSearch from '../components/WorkspaceSearch';
-import { formatDate } from '@/utils/date';
-import { getStoredSearchEngine } from '@/utils/storage';
+import { styled } from "@mui/material/styles";
+import { Box, Typography } from "@mui/material";
+import WorkspaceHome from "./main";
+import WorkspaceSearch from "../components/WorkspaceSearch";
+import { formatDate } from "@/utils/common/date";
+import { getStoredSearchEngine } from "@/utils/fe/storage";
 
 type QueryParams = Record<"tag" | "toolTag", string>;
-
 
 interface WorkspaceContentProps {
   activeTag?: string;
@@ -21,27 +20,27 @@ interface WorkspaceContentProps {
 
 const Container = styled(Box)(({ theme }) => ({
   flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   padding: theme.spacing(4, 2),
-  overflowY: 'auto',
-  height: '100vh',
+  overflowY: "auto",
+  height: "100vh",
 }));
 
 const TimeText = styled(Typography)(({ theme }) => ({
-  fontSize: '5rem',
-  color: 'rgba(255, 255, 255, 0.9)',
+  fontSize: "5rem",
+  color: "rgba(255, 255, 255, 0.9)",
   fontWeight: 400,
-  textAlign: 'center',
+  textAlign: "center",
   marginBottom: 0,
 }));
 
 const DateText = styled(Typography)(({ theme }) => ({
-  fontSize: '1.2rem',
-  color: 'rgba(255, 255, 255, 0.7)',
+  fontSize: "1.2rem",
+  color: "rgba(255, 255, 255, 0.7)",
   marginBottom: theme.spacing(4),
-  textAlign: 'center',
+  textAlign: "center",
   fontWeight: 400,
 }));
 
@@ -74,16 +73,14 @@ const DateDisplay = React.memo(() => {
     return () => clearInterval(timer);
   }, []);
 
-  return (
-    <DateText>
-      {formatDate(currentDate)}
-    </DateText>
-  );
+  return <DateText>{formatDate(currentDate)}</DateText>;
 });
 
 const WorkspaceContent: React.FC<WorkspaceContentProps> = () => {
-  const [searchEngine, setSearchEngine] = useState(() => getStoredSearchEngine() || 'google');
-  const [searchText, setSearchText] = useState('');
+  const [searchEngine, setSearchEngine] = useState(
+    () => getStoredSearchEngine() || "google"
+  );
+  const [searchText, setSearchText] = useState("");
 
   const handleSearchEngineChange = (engine: string) => {
     setSearchEngine(engine);
@@ -107,21 +104,21 @@ const WorkspaceContent: React.FC<WorkspaceContentProps> = () => {
       <Container>
         {renderTime()}
         {/* {renderTitle()} */}
-        <Box sx={{ width: '100%', maxWidth: '600px', mb: 4 }}>
-          <WorkspaceSearch 
-            onSearchEngineChange={handleSearchEngineChange} 
+        <Box sx={{ width: "100%", maxWidth: "600px", mb: 4 }}>
+          <WorkspaceSearch
+            onSearchEngineChange={handleSearchEngineChange}
             onSearchTextChange={handleSearchTextChange}
             searchText={searchText}
           />
         </Box>
-        
+
         <Box
           sx={{
-            width: '100%',
-            maxWidth: '1600px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            width: "100%",
+            maxWidth: "1600px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             gap: 4,
           }}
         >
@@ -131,7 +128,6 @@ const WorkspaceContent: React.FC<WorkspaceContentProps> = () => {
     </Suspense>
   );
 };
-
 
 const Workspace: React.FC = () => {
   const { params, updateParams } = useQueryParams<QueryParams>({

@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { loginSessions } from '@/utils/wechat';
+import { loginSessions } from '@/utils/server/wechat';
 import { sign } from 'jsonwebtoken';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
 const secret = JSON.parse(
   readFileSync(join(process.cwd(), 'src/config/secret.json'), 'utf-8')
-);
+).jwtSecret;
 
 export async function POST(request: Request) {
   try {
