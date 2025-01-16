@@ -9,3 +9,4 @@ secret.json
 tsconfig.tsbuildinfo
 mock-login-callback.ts
 .env.local
+# /src/test/script
