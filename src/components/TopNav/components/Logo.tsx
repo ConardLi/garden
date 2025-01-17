@@ -11,7 +11,7 @@ interface LogoProps {
 const Logo: FC<LogoProps> = ({ title }) => {
   return (
     <Link
-      href="/"
+      href="/workspace/tools"
       style={{
         textDecoration: "none",
         color: "inherit",
@@ -40,16 +40,17 @@ const Logo: FC<LogoProps> = ({ title }) => {
           direction="row"
           alignItems="center"
           spacing={3}
-          sx={{ 
+          sx={{
             whiteSpace: "nowrap",
             position: "relative",
           }}
+          style={{ marginBottom: 5 }}
         >
           <Box
             component="svg"
             viewBox="0 0 400 80"
             sx={{
-              width: 280,
+              width: 270,
               height: 56,
               display: "flex",
               alignItems: "center",
@@ -59,7 +60,7 @@ const Logo: FC<LogoProps> = ({ title }) => {
               x="0"
               y="56"
               style={{
-                fontSize: "40px",
+                fontSize: "36px",
                 fontWeight: 800,
                 animation: "stroke 3s infinite alternate",
                 letterSpacing: "2px",
@@ -102,6 +103,8 @@ const Logo: FC<LogoProps> = ({ title }) => {
               letterSpacing: "0.5px",
               transition: "all 0.3s ease",
               marginLeft: "-100px !important",
+              left: "-14px",
+              top: "2px",
               "&::before": {
                 content: '""',
                 position: "absolute",
@@ -110,7 +113,8 @@ const Logo: FC<LogoProps> = ({ title }) => {
                 transform: "translateY(-50%)",
                 width: 2,
                 height: "45%",
-                background: "linear-gradient(180deg, #1976d2, rgba(25, 118, 210, 0.3))",
+                background:
+                  "linear-gradient(180deg, #1976d2, rgba(25, 118, 210, 0.3))",
                 borderRadius: 4,
                 transition: "height 0.3s ease",
               },
@@ -121,7 +125,8 @@ const Logo: FC<LogoProps> = ({ title }) => {
                 height: "2px",
                 bottom: -2,
                 left: "20%",
-                background: "linear-gradient(90deg, transparent, #1976d2, transparent)",
+                background:
+                  "linear-gradient(90deg, transparent, #1976d2, transparent)",
                 transition: "width 0.3s ease",
                 opacity: 0,
               },
@@ -146,4 +151,4 @@ const Logo: FC<LogoProps> = ({ title }) => {
   );
 };
 
-export default Logo; 
+export default Logo;

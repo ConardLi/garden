@@ -1,18 +1,22 @@
 "use client";
 
 import { FC, ReactNode } from "react";
-import { Container, Stack, Typography } from "@mui/material";
+import { Container, Typography, Paper, Box } from "@mui/material";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import ToolLayout from "../ToolLayout";
-import { useTitle } from "../../hooks/useTitle";
+import { TOOLS } from "@/constants/tools";
+import InfoIcon from "@mui/icons-material/Info";
 
-interface ToolPageLayoutProps {
-  title: string;
+interface Props {
   children: ReactNode;
+  title?: string;
 }
 
-const ToolPageLayout: FC<ToolPageLayoutProps> = ({ title, children }) => {
-  useTitle(title);
+const ToolPageLayout: FC<Props> = ({ children, title }) => {
+  const pathname = usePathname();
+  const toolId = pathname?.split("/").pop();
+  const tool = TOOLS.find((t) => t.id === toolId);
 
   return (
     <ToolLayout title={title}>
@@ -24,13 +28,46 @@ const ToolPageLayout: FC<ToolPageLayoutProps> = ({ title, children }) => {
             transition={{ duration: 0.5 }}
             style={{ height: "100%" }}
           >
-            {/* <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-            <Typography variant="h4" component="h1" fontWeight="bold">
-              {title}
-            </Typography>
-          </Stack> */}
-
             {children}
+
+            {tool?.detailDescription && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Paper
+                  elevation={0}
+                  sx={{
+                    mt: 4,
+                    p: 3,
+                    borderRadius: 2,
+                    background: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.05)"
+                        : "rgba(0, 0, 0, 0.02)",
+                    border: "1px solid",
+                    borderColor: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "rgba(255, 255, 255, 0.1)"
+                        : "rgba(0, 0, 0, 0.05)",
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      color: (theme) =>
+                        theme.palette.mode === "dark"
+                          ? "rgba(255, 255, 255, 0.7)"
+                          : "rgba(0, 0, 0, 0.6)",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {tool.detailDescription}
+                  </Typography>
+                </Paper>
+              </motion.div>
+            )}
           </motion.div>
         </div>
       </Container>
