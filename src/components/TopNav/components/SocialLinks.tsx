@@ -3,9 +3,12 @@
 import { FC, useState } from "react";
 import { IconButton, Box, Popover, Avatar } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { UserAvatar } from "@/components/workspace/components/UserAvatar";
 
 const SocialLinks: FC = () => {
-  const [wechatAnchorEl, setWechatAnchorEl] = useState<HTMLElement | null>(null);
+  const [wechatAnchorEl, setWechatAnchorEl] = useState<HTMLElement | null>(
+    null
+  );
   const [mpAnchorEl, setMpAnchorEl] = useState<HTMLElement | null>(null);
 
   return (
@@ -109,24 +112,12 @@ const SocialLinks: FC = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <GitHubIcon />
+        <GitHubIcon sx={{ fontSize: 24 }} />
       </IconButton>
 
-      <IconButton>
-        <Avatar
-          sx={{
-            width: 24,
-            height: 24,
-            fontSize: "0.875rem",
-            bgcolor: "primary.main",
-            "&:hover": {
-              opacity: 0.8,
-            },
-          }}
-        />
-      </IconButton>
+      <UserAvatar />
     </>
   );
 };
 
-export default SocialLinks; 
+export default SocialLinks;

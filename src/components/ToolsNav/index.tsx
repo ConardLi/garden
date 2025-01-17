@@ -15,7 +15,7 @@ const ToolsNav: FC<{ open?: boolean }> = ({ open = true }) => {
   const router = useRouter();
 
   const [expandedTags, setExpandedTags] = useState<Record<string, boolean>>(
-    TAGS.reduce((acc, tag) => ({ ...acc, [tag]: true }), {})
+    TAGS.reduce((acc, tag) => ({ ...acc, [tag]: false }), {})
   );
 
   const toggleTag = (tag: string) => {
@@ -68,7 +68,7 @@ const ToolsNav: FC<{ open?: boolean }> = ({ open = true }) => {
           icon={<HomeIcon fontSize="small" />}
           label="全部工具"
           selected={pathname === "/" || pathname === "/index.html"}
-          onClick={() => handleNavigate(getHomePath())}
+          onClick={() => handleNavigate("/workspace/tools")}
         />
 
         {TAGS.map((tag) => {

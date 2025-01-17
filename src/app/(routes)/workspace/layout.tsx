@@ -15,7 +15,7 @@ const WorkspaceContainer = styled(Box)({
 
 // 获取保存的壁纸 URL
 const getSavedWallpaper = () => {
-  if (typeof window === "undefined") return undefined;
+  if (typeof window === "undefined" || !localStorage) return undefined;
   const savedWallpaper = localStorage.getItem("workspace-wallpaper");
   return savedWallpaper ? `url(${savedWallpaper})` : undefined;
 };
