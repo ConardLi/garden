@@ -1,10 +1,11 @@
 "use client";
 
 import { FC, ReactNode } from "react";
-import { Container, Typography, Paper, Box } from "@mui/material";
+import { Container, Typography, Paper, Box, Divider } from "@mui/material";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import ToolLayout from "../ToolLayout";
+import Footer from "../Footer";
 import { TOOLS } from "@/constants/tools";
 import InfoIcon from "@mui/icons-material/Info";
 
@@ -26,7 +27,6 @@ const ToolPageLayout: FC<Props> = ({ children, title }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            style={{ height: "100%" }}
           >
             {children}
 
@@ -69,6 +69,33 @@ const ToolPageLayout: FC<Props> = ({ children, title }) => {
               </motion.div>
             )}
           </motion.div>
+
+          <Divider
+            sx={{
+              my: 6,
+              borderColor: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "rgba(255, 255, 255, 0.1)"
+                  : "rgba(0, 0, 0, 0.05)",
+            }}
+          />
+
+          <Paper
+            elevation={0}
+            sx={{
+              p: 3,
+              borderRadius: 2,
+              background: (theme) =>
+                theme.palette.mode === "dark" ? "#f5f5fb" : "#f5f5fb",
+              border: "1px solid",
+              borderColor: (theme) =>
+                theme.palette.mode === "dark"
+                  ? "rgba(255, 255, 255, 0.1)"
+                  : "rgba(0, 0, 0, 0.05)",
+            }}
+          >
+            <Footer />
+          </Paper>
         </div>
       </Container>
     </ToolLayout>
