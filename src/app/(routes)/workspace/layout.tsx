@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Snackbar, Alert } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import WorkspaceNav from "@/components/workspace/WorkspaceNav";
+import { storage } from "@/utils/fe/storage";
 
 const WorkspaceContainer = styled(Box)({
   width: "100vw",
@@ -16,7 +17,7 @@ const WorkspaceContainer = styled(Box)({
 // 获取保存的壁纸 URL
 const getSavedWallpaper = () => {
   if (typeof window === "undefined" || !localStorage) return undefined;
-  const savedWallpaper = localStorage.getItem("workspace-wallpaper");
+  const savedWallpaper = storage.getItem("workspace-wallpaper");
   return savedWallpaper ? `url(${savedWallpaper})` : undefined;
 };
 

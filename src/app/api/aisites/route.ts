@@ -34,7 +34,6 @@ export async function GET(request: NextRequest) {
       query.title = { $in: titles };
     }
 
-    console.log(22,query);
 
     const [aisites, total] = await Promise.all([
       AISite.find(query)

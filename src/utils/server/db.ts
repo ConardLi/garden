@@ -20,6 +20,7 @@ export async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      dbName: 'web-tools', // 指定数据库名称
     };
     // @ts-ignore
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {

@@ -125,11 +125,7 @@ export const getFavoriteAIWebsites = (): string[] => {
 
 export const setFavoriteAIWebsites = (websites: string[]): void => {
   const storage = getLocalStorage();
-  console.log(555,websites);
   const res = storage?.setItem(STORAGE_KEYS.FAVORITE_AI_WEBSITES, JSON.stringify(websites));
-  console.log(222,storage,res);
-  console.log(333,storage);
-  console.log(444,storage.getItem(STORAGE_KEYS.FAVORITE_AI_WEBSITES));
 };
 
 export const toggleFavoriteAIWebsite = (websiteTitle: string): string[] => {
@@ -177,3 +173,14 @@ export const toggleFavoritePrompt = (promptId: string): string[] => {
   storage?.setItem(FAVORITE_PROMPTS_KEY, JSON.stringify(favorites));
   return favorites;
 };
+
+export const storage = {
+  getItem: (key: string) => {
+    if (typeof window === 'undefined') return null;
+    return localStorage.getItem(key);
+  },
+  setItem: (key: string, value: string) => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem(key, value);
+  },
+}
