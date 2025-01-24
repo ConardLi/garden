@@ -14,7 +14,7 @@ const AESTool: FC = () => {
   const [mode, setMode] = useState<AESMode>("encrypt");
   const [options, setOptions] = useState<AESOptions>({
     mode: "CBC",
-    padding: "PKCS7",
+    padding: "Pkcs7",
     keySize: 256,
     key: "",
     iv: "",
@@ -24,9 +24,8 @@ const AESTool: FC = () => {
   const handleProcess = useCallback(() => {
     try {
       setError(null);
-      const result = mode === "encrypt" 
-        ? encrypt(input, options)
-        : decrypt(input, options);
+      const result =
+        mode === "encrypt" ? encrypt(input, options) : decrypt(input, options);
       setOutput(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "处理失败");
@@ -61,4 +60,4 @@ const AESTool: FC = () => {
   );
 };
 
-export default AESTool; 
+export default AESTool;

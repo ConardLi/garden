@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { QRCodeSessionModel } from '@/models/qrcode-session';
-import { UserModel } from '@/models/user';
-import { connectDB } from '@/utils/server/db';
+import { NextRequest, NextResponse } from "next/server";
+import { QRCodeSessionModel } from "@/models/qrcode-session";
+import { UserModel } from "@/models/user";
+import { connectDB } from "@/utils/server/db";
 
 interface WxLoginBody {
   qrcodeId: string;
@@ -16,12 +16,12 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    const body = await req.json() as WxLoginBody;
+    const body = (await req.json()) as WxLoginBody;
     const { qrcodeId, code, userInfo } = body;
 
     if (!qrcodeId || !code || !userInfo) {
       return NextResponse.json(
-        { error: 'Missing required parameters' },
+        { error: "Missing required parameters" },
         { status: 400 }
       );
     }
@@ -31,29 +31,29 @@ export async function POST(req: NextRequest) {
 
     if (!session) {
       return NextResponse.json(
-        { error: 'Invalid QR code session' },
+        { error: "Invalid QR code session" },
         { status: 404 }
       );
     }
 
-    if (session.status === 'expired') {
+    if (session.status === "expired") {
       return NextResponse.json(
-        { error: 'QR code session expired' },
+        { error: "QR code session expired" },
         { status: 400 }
       );
     }
 
     // TODO: 调用微信接口获取openId
-    const openId = 'mock-openid'; // 这里需要替换为实际的微信接口调用
+    const openId = "mock-openid"; // 这里需要替换为实际的微信接口调用
 
     // 查找或创建用户
-    let user = await UserModel.findOne({ openId }).lean();
-    
+    let user: any = await UserModel.findOne({ openId }).lean();
+
     if (!user) {
       user = await UserModel.create({
         openId,
         nickname: userInfo.nickName,
-        avatarUrl: userInfo.avatarUrl
+        avatarUrl: userInfo.avatarUrl,
       });
     } else {
       // 更新用户信息
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         { openId },
         {
           nickname: userInfo.nickName,
-          avatarUrl: userInfo.avatarUrl
+          avatarUrl: userInfo.avatarUrl,
         }
       );
     }
@@ -70,21 +70,21 @@ export async function POST(req: NextRequest) {
     await QRCodeSessionModel.findOneAndUpdate(
       { qrcodeId },
       {
-        status: 'success' as const,
+        status: "success" as const,
         userId: user._id,
         userInfo: {
           nickname: userInfo.nickName,
-          avatarUrl: userInfo.avatarUrl
-        }
+          avatarUrl: userInfo.avatarUrl,
+        },
       }
     );
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Failed to process WeChat login:', error);
+    console.error("Failed to process WeChat login:", error);
     return NextResponse.json(
-      { error: 'Failed to process WeChat login' },
+      { error: "Failed to process WeChat login" },
       { status: 500 }
     );
   }
-} 
+}
