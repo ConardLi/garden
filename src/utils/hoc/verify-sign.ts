@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import md5 from 'crypto-js/md5';
-import { apiSignKey } from '../../config/secret.json';
+import { createHash } from 'crypto';
+import { env } from '@/config/env';
 
 const SIGN_EXPIRE_TIME = 5 * 60 * 1000; // 1分钟内有效
 
@@ -30,8 +30,8 @@ export function verifySign(handler: Function) {
       const signStr = keys
         .map(key => `${key}=${params[key]}`)
         .join('&');
-      const signStrWithKey = `${signStr}&key=${apiSignKey}`;
-      const serverSign = md5(signStrWithKey).toString();
+      const signStrWithKey = `${signStr}&key=${env.apiSignKey}`;
+      const serverSign = createHash('md5').update(signStrWithKey).digest('hex');
 
       // 5. 比对签名
       if (sign !== serverSign) {

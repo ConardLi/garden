@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server';
 import { loginSessions } from '@/utils/server/wechat';
 import { sign } from 'jsonwebtoken';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { env } from '@/config/env';
 
-const secret = JSON.parse(
-  readFileSync(join(process.cwd(), 'src/config/secret.json'), 'utf-8')
-).jwtSecret;
+const secret = env.jwtSecret;
 
 export async function POST(request: Request) {
   try {
@@ -35,7 +32,7 @@ export async function POST(request: Request) {
         openid: session.openid,
         // 这里可以添加其他用户信息
       },
-      secret.token,
+      secret,
       { expiresIn: '7d' }
     );
 

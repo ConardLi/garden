@@ -1,11 +1,5 @@
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import crypto from 'crypto';
-
-// 读取配置文件
-const secret = JSON.parse(
-  readFileSync(join(process.cwd(), 'src/config/secret.json'), 'utf-8')
-).jwtSecret;
+import { env } from '@/config/env';
 
 interface AccessTokenResponse {
   access_token: string;
@@ -19,16 +13,16 @@ interface QRCodeResponse {
 }
 
 let accessToken: string | null = null;
-let tokenExpireTime: number | null = null;
+let accessTokenExpireTime: number | null = null;
 
 export async function getAccessToken(): Promise<string> {
   // 如果token存在且未过期，直接返回
-  if (accessToken && tokenExpireTime && Date.now() < tokenExpireTime) {
+  if (accessToken && accessTokenExpireTime && Date.now() < accessTokenExpireTime) {
     return accessToken;
   }
 
   // 获取新token
-  const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${secret.wxAppId}&secret=${secret.wxAppSecret}`;
+  const url = `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${env.wx.appId}&secret=${env.wx.appSecret}`;
   const response = await fetch(url);
   const data: AccessTokenResponse = await response.json();
 
@@ -37,7 +31,7 @@ export async function getAccessToken(): Promise<string> {
   }
 
   accessToken = data.access_token;
-  tokenExpireTime = Date.now() + (data.expires_in - 300) * 1000; // 提前5分钟过期
+  accessTokenExpireTime = Date.now() + (data.expires_in - 300) * 1000; // 提前5分钟过期
   return accessToken;
 }
 
@@ -68,8 +62,8 @@ export async function createTempQRCode(sceneStr: string): Promise<QRCodeResponse
 
 export function verifySignature(signature: string, timestamp: string, nonce: string): boolean {
   try {
-    console.log('Verifying signature with params:', { signature, timestamp, nonce, token: secret.token });
-    const arr = [secret.token, timestamp, nonce];
+    console.log('Verifying signature with params:', { signature, timestamp, nonce, token: env.wx.token });
+    const arr = [env.wx.token, timestamp, nonce];
     arr.sort();
     const str = arr.join('');
     console.log('Sorted and joined string:', str);
@@ -91,5 +85,3 @@ export const loginSessions = new Map<string, {
   openid?: string;
   createTime: number;
 }>();
-
-

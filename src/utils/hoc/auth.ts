@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verify } from 'jsonwebtoken';
-import { readFileSync } from 'fs';
-import { join } from 'path';
-
-const secret = JSON.parse(
-  readFileSync(join(process.cwd(), 'src/config/secret.json'), 'utf-8')
-);
+import { env } from '@/config/env';
 
 // 定义权限验证选项接口
 interface AuthOptions {
@@ -42,7 +37,7 @@ export function requireAuth(
       }
 
       // 验证 token
-      const decoded: any = verify(token, secret.jwtSecret);
+      const decoded: any = verify(token, env.jwtSecret);
       
       // 将用户信息添加到请求对象中
       (request as any).user = decoded;
@@ -65,7 +60,7 @@ export function requireAuth(
 
         // 验证角色（暂时仅支持验证管理员）
         if (options.allowedRoles?.length > 0) {
-          if(!secret.adminUserId === decoded.nickname){
+          if(!env.adminUserId === decoded.nickname){
           // if (!options.allowedRoles.includes(decoded.role)) {
             return NextResponse.json(
               { error: options.errorMessage || '当前角色无权访问此接口' },

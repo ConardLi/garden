@@ -4,9 +4,9 @@ build
 website-local.json
 ai-local.json
 .next
-secret.json
 .DS_Store
 tsconfig.tsbuildinfo
 mock-login-callback.ts
 .env.local
-# /src/test/script
+/src/test/crawler
+/src/test/mock

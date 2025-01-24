@@ -1,17 +1,17 @@
 import COS from 'cos-nodejs-sdk-v5';
-import secret from '@/config/secret.json';
+import { env } from '@/config/env';
 
 const cos = new COS({
-  SecretId: secret.cos.SecretId,
-  SecretKey: secret.cos.SecretKey,
+  SecretId: env.cos.secretId,
+  SecretKey: env.cos.secretKey,
 });
 
 export const uploadFile = (file: Buffer, fileName: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     cos.putObject(
       {
-        Bucket: secret.cos.Bucket,
-        Region: `ap-${secret.cos.Region}`,
+        Bucket: env.cos.bucket,
+        Region: `ap-${env.cos.region}`,
         Key: `website-icons/${fileName}`,
         Body: file,
         ContentType: 'image/jpeg',
@@ -21,7 +21,7 @@ export const uploadFile = (file: Buffer, fileName: string): Promise<string> => {
           reject(err);
           return;
         }
-        resolve(`https://${secret.cos.Bucket}.cos.ap-${secret.cos.Region}.myqcloud.com/website-icons/${fileName}`);
+        resolve(`https://${env.cos.bucket}.cos.ap-${env.cos.region}.myqcloud.com/website-icons/${fileName}`);
       }
     );
   });
