@@ -108,7 +108,7 @@ const SocialLinks: FC = () => {
       </Box>
 
       <IconButton
-        href="https://github.com/ConardLi/web-tools"
+        href="https://github.com/ConardLi/garden"
         target="_blank"
         rel="noopener noreferrer"
       >

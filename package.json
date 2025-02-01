@@ -1,5 +1,5 @@
 {
-  "name": "next-web-tools",
+  "name": "garden",
   "version": "1.0.0",
   "description": "Web tools built with Next.js and SSG",
   "private": true,
@@ -7,7 +7,8 @@
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "docker buildx build --platform linux/amd64 -t conardli17/garden2:latest --load ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
