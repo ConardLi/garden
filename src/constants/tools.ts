@@ -144,7 +144,7 @@ export const TOOLS: Tool[] = [
     detailDescription:
       "支持线性渐变、径向渐变、多点渐变，提供可视化编辑界面，可直接导出CSS代码",
     icon: "Gradient",
-    tags: ["设计工具"],
+    tags: ["设计工具", "开发工具"],
   },
   {
     id: "shadow-generator",
@@ -153,7 +153,16 @@ export const TOOLS: Tool[] = [
     detailDescription:
       "可视化编辑CSS阴影效果，支持多层阴影、内外阴影、颜色渐变，快速创建立体效果",
     icon: "Layers",
-    tags: ["设计工具"],
+    tags: ["设计工具", "开发工具"],
+  },
+  {
+    id: "easing-wizard",
+    name: "缓动动画生成",
+    description: "CSS 动画缓动函数生成器",
+    detailDescription:
+      "可视化编辑CSS动画缓动函数，支持贝塞尔曲线调节，提供常用预设，实时预览动画效果",
+    icon: "Animation",
+    tags: ["设计工具", "开发工具"],
   },
   // 文件工具
   {

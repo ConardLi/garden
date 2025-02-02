@@ -1,0 +1,63 @@
+@keyframes moveBox {
+  0% {
+    left: 0;
+    transform: translateY(-50%);
+  }
+  100% {
+    left: calc(100% - 50px);
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes moveBoxVertical {
+  0% {
+    top: 0;
+    transform: translateX(-50%);
+  }
+  100% {
+    top: calc(100% - 50px);
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes moveBoxDiagonal {
+  0% {
+    left: 0;
+    top: 0;
+  }
+  100% {
+    left: calc(100% - 50px);
+    top: calc(100% - 50px);
+  }
+}
+
+.control-point {
+  cursor: move;
+  transition: transform 0.2s;
+}
+
+.control-point:hover {
+  transform: scale(1.2);
+}
+
+.grid-line {
+  stroke: rgba(0, 0, 0, 0.1);
+  stroke-width: 1;
+}
+
+.grid-line-main {
+  stroke: rgba(0, 0, 0, 0.2);
+  stroke-width: 1.5;
+}
+
+.bezier-curve {
+  stroke: #1976d2;
+  stroke-width: 2;
+  fill: none;
+}
+
+.control-line {
+  stroke: rgba(0, 0, 0, 0.3);
+  stroke-width: 1;
+  stroke-dasharray: 4;
+}
