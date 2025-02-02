@@ -4,7 +4,7 @@ import { FC, useState, useCallback } from "react";
 import { Stack, Divider } from "@mui/material";
 import { CompressorContainer } from "./styles";
 import type { CompressionOptions, CompressionResult } from "./utils";
-import { compressImage, downloadFile } from "./utils";
+import { compressImage, downloadFile, DEFAULT_OPTIONS } from "./utils";
 import DropZone from "@/components/DropZone";
 import ProgressBar from "./components/ProgressBar";
 import ResultCard from "./components/ResultCard";
@@ -14,9 +14,7 @@ const ImageCompressor: FC = () => {
   const [compressing, setCompressing] = useState(false);
   const [progress, setProgress] = useState(0);
   const [result, setResult] = useState<CompressionResult | null>(null);
-  const [options, setOptions] = useState<CompressionOptions>({
-    quality: 0.7,
-  });
+  const [options, setOptions] = useState<CompressionOptions>(DEFAULT_OPTIONS);
 
   const handleFileSelect = useCallback(
     async (file: File) => {
@@ -33,7 +31,8 @@ const ImageCompressor: FC = () => {
         setResult(compressionResult);
         downloadFile(
           compressionResult.compressedFile,
-          `compressed-${file.name}`
+          file.name,
+          compressionResult.format
         );
       } catch (error) {
         console.error("压缩失败:", error);
