@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import ToolLayout from "../ToolLayout";
 import Footer from "../Footer";
 import { TOOLS } from "@/constants/tools";
-import InfoIcon from "@mui/icons-material/Info";
 
 interface Props {
   children: ReactNode;
@@ -16,7 +15,7 @@ interface Props {
 
 const ToolPageLayout: FC<Props> = ({ children, title }) => {
   const pathname = usePathname();
-  const toolId = pathname?.split("/").pop();
+  const toolId = pathname.split("/tools/")[1];
   const tool = TOOLS.find((t) => t.id === toolId);
 
   return (

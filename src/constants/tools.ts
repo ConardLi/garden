@@ -11,6 +11,7 @@ import LanguageIcon from "@mui/icons-material/Language";
 import { SvgIconTypeMap } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import LockIcon from "@mui/icons-material/Lock";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 export const TAGS: TagType[] = [
   "开发工具",
@@ -23,6 +24,7 @@ export const TAGS: TagType[] = [
   "设计工具",
   "视频工具",
   "网络工具",
+  "数据图表",
 ];
 
 export const TOOLS: Tool[] = [
@@ -194,6 +196,78 @@ export const TOOLS: Tool[] = [
     tags: ["网络工具"],
   },
   {
+    id: "charts/bar",
+    name: "柱状图",
+    description: "在线生成美观的柱状图",
+    detailDescription:
+      "支持自定义数据、样式、动画效果，可导出为图片格式，适用于数据可视化展示",
+    icon: "BarChart",
+    tags: ["数据图表", "设计工具"],
+  },
+  {
+    id: "charts/group-bar",
+    name: "分组柱状图",
+    description: "在线生成分组柱状图",
+    detailDescription:
+      "支持多组数据对比展示，自定义样式和动画效果，适用于多维度数据分析",
+    icon: "BarChart",
+    tags: ["数据图表", "设计工具"],
+  },
+  {
+    id: "charts/line",
+    name: "折线图",
+    description: "在线生成专业的折线图",
+    detailDescription:
+      "支持多系列数据、平滑曲线、面积填充、自定义样式，适用于趋势分析和数据对比",
+    icon: "ShowChart",
+    tags: ["数据图表", "设计工具"],
+  },
+  {
+    id: "charts/radar",
+    name: "雷达图",
+    description: "在线生成多维数据雷达图",
+    detailDescription:
+      "支持多维度数据展示、自定义指标、样式调整，适用于多维度数据分析和对比",
+    icon: "RadarChart",
+    tags: ["数据图表", "设计工具"],
+  },
+  {
+    id: "charts/stacked-bar",
+    name: "堆叠柱状图",
+    description: "在线堆叠柱状图生成工具",
+    detailDescription:
+      "支持多系列数据堆叠显示，可自定义样式、动画效果，适用于展示分组数据的累积关系",
+    icon: "BarChart",
+    tags: ["数据图表"],
+  },
+  {
+    id: "charts/stacked-area",
+    name: "堆叠面积图",
+    description: "在线堆叠面积图生成工具",
+    detailDescription:
+      "支持多系列数据堆叠显示，展示数据随时间的累积变化趋势，适用于时间序列数据分析",
+    icon: "BarChart",
+    tags: ["数据图表"],
+  },
+  {
+    id: "charts/pie",
+    name: "饼图",
+    description: "在线饼图生成工具",
+    detailDescription:
+      "展示部分与整体的关系，支持自定义样式、标签和动画效果，适用于占比数据的可视化",
+    icon: "BarChart",
+    tags: ["数据图表"],
+  },
+  {
+    id: "charts/donut",
+    name: "环形图",
+    description: "在线环形图生成工具",
+    detailDescription:
+      "基于饼图的变体，中心区域可添加额外信息，支持自定义样式和动画效果",
+    icon: "BarChart",
+    tags: ["数据图表"],
+  },
+  {
     id: "ssl-checker",
     name: "SSL 证书检测",
     description: "检查网站 SSL 证书状态",
@@ -276,6 +350,7 @@ export const TAG_TO_ICON: { [key: string]: IconType } = {
   开发工具: CodeIcon,
   图片工具: ImageIcon,
   文本工具: TextFieldsIcon,
+  数据图表: BarChartIcon,
   生活工具: BuildIcon,
   转换工具: SwapHorizIcon,
   文件工具: FolderIcon,
